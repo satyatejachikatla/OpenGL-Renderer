@@ -3,6 +3,7 @@
 
 #include <string>
 #include <unordered_map>
+#include "glErrors.h"
 
 struct ShaderProgrameSource {
 	std::string VertexSource;

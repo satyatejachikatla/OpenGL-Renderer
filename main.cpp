@@ -6,6 +6,7 @@
 #include <GL/glew.h>	// GL Wrangler
 #include <GLFW/glfw3.h> // Window management
 
+#include "glErrors.h"
 #include "Renderer.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
@@ -72,7 +73,7 @@ int main(void) {
 
 /// with indices mapping to points to draw
 	unsigned int indices_n = 6;
-	unsigned int indices[] = {
+	unsigned int indices[indices_n] = {
 		0,1,2,
 		2,3,0
 	};
@@ -90,31 +91,20 @@ int main(void) {
 	ib.Unbind();
 	shader.Unbind();
 
+	Renderer renderer;
 
 	float r = 0.0f;
 	float increment = 0.05f;
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window)) {
 		/* Render here */
-		glCall(glClear(GL_COLOR_BUFFER_BIT));
+		renderer.Clear();
 
-		/* Binds during th loop */
-
-		//Bind VAO//
-		va.Bind();
-
-			//Update Shader//
+		//Update Shader//
 		shader.Bind();
 		shader.SetUniform4f("u_Color",r ,0.3f,0.8f,1.0f);
 
-		// Update Buffer array //
-		vb.Bind();	
-
-		// Update Index array //
-		ib.Bind();
-
-		//glDrawArrays(GL_TRIANGLES,0,positions_n/axis_n);
-		glCall(glDrawElements(GL_TRIANGLES,indices_n,GL_UNSIGNED_INT,nullptr));
+		renderer.Draw(va,ib,shader);
 
 		if(r > 1.0f)
 			increment = -0.05f;

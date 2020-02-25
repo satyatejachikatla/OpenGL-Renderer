@@ -1,22 +1,15 @@
 #ifndef __RENDERER_H__
 #define __RENDERER_H__
 
-#include <iostream>
-#include <GL/glew.h>    // GL Wrangler
+#include "glErrors.h"
+#include "VertexArray.h"
+#include "IndexBuffer.h"
+#include "Shader.h"
 
-void GLClearError();
-bool GLLogCall();
-
-#define ASSERT(x)                                             \
-    if (!(x)) {                                               \
-            std::cerr << __FILE__ << ":"<<                    \
-                                      __LINE__ << std::endl;  \
-            exit(EXIT_FAILURE);                               \
-    }
-
-#define glCall(call)                                          \
-    GLClearError();                                           \
-    call;                                                     \
-    ASSERT(GLLogCall());                                      \
+class Renderer {
+public:
+	void Clear() const;
+	void Draw(const VertexArray& va,const IndexBuffer& ib,const Shader& shader);
+};
 
 #endif /* __RENDERER_H__ */

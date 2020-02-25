@@ -7,7 +7,8 @@ LIBS := -lGL    \
 		-lGLEW  \
 		-lglfw
 
-BUILT_LIBS := Renderer.a \
+BUILT_LIBS := glErrors.a \
+			  Renderer.a \
 			  VertexBuffer.a \
 			  IndexBuffer.a \
 			  VertexArray.a \
@@ -21,12 +22,14 @@ all:
 	$(CXX) main.cpp -o run $(LIBS) $(BUILT_LIBS)
 
 libs:
+	$(CXX) -c glErrors.cpp
 	$(CXX) -c Renderer.cpp
 	$(CXX) -c VertexBuffer.cpp
 	$(CXX) -c IndexBuffer.cpp
 	$(CXX) -c VertexArray.cpp
 	$(CXX) -c Shader.cpp
 	
+	$(AR)  rvs glErrors.a glErrors.o
 	$(AR)  rvs Renderer.a Renderer.o
 	$(AR)  rvs VertexBuffer.a VertexBuffer.o
 	$(AR)  rvs IndexBuffer.a IndexBuffer.o

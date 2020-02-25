@@ -1,6 +1,7 @@
 #ifndef __VERTEX_ARRAY_H__
 #define __VERTEX_ARRAY_H__
 
+#include "glErrors.h"
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
 
