@@ -12,6 +12,7 @@
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "Shader.h"
+#include "Texture.h"
 
 int main(void) {
 
@@ -38,7 +39,7 @@ int main(void) {
 
 	/* Make the window's context current */
 	glCall(glfwMakeContextCurrent(window));
-	/* FPS in sec */
+	/* Vsyncing screen number for proper frame rate*/
 	glCall(glfwSwapInterval(1));
 
 	/* glewInit after context setting */
@@ -52,38 +53,40 @@ int main(void) {
 /* END SETTINGS */
 { // Scope Createtion to delete the gl variables before the window exit
 
-	int axis_n = 2;
-	int positions_n = 4*axis_n;
-	float positions[positions_n] = {
-		-0.5f, -0.5f,
-		 0.5f,  -0.5f,
-		 0.5f, 0.5f,
-		 -0.5f, 0.5f,
+	int positions_n = 4*4;
+	float positions[] = {
+		-0.5f, -0.5f, 0.0f, 0.0f, //0
+		 0.5f, -0.5f, 1.0f, 0.0f, //1
+		 0.5f,  0.5f, 1.0f, 1.0f, //2
+		-0.5f,  0.5f, 0.0f, 1.0f, //3
 	};
 
-
-/// All the Vertex Object Creation
-	VertexArray va;
-	VertexBuffer vb(positions,positions_n*sizeof(*positions));
-	VertexBufferLayout layout;
-	layout.Push<float>(axis_n);
-	va.AddBuffer(vb,layout);
-
-///
-
-/// with indices mapping to points to draw
 	unsigned int indices_n = 6;
 	unsigned int indices[indices_n] = {
 		0,1,2,
 		2,3,0
 	};
 
+	glCall(glEnable(GL_BLEND));
+	glCall(glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA));
+
+/// All the Vertex Object Creation
+	VertexArray va;
+	VertexBuffer vb(positions,positions_n*sizeof(*positions));
+	VertexBufferLayout layout;
+	layout.Push<float>(2);
+	layout.Push<float>(2);
+	va.AddBuffer(vb,layout);
 	IndexBuffer ib(indices,indices_n);
 ///
 
 	Shader shader("./Basic.shader");
 	shader.Bind();
 	shader.SetUniform4f("u_Color",0.8f,0.3f,0.8f,1.0f);
+
+	Texture texture("./res/textures/TheCherno.png");
+	texture.Bind(0);
+	shader.SetUniform1i("u_Texture",0);
 
 	/* lets unbind everything */
 	va.Unbind();

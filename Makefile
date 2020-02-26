@@ -5,29 +5,39 @@ MAKE ?= make
 LIBS := -lGL    \
 		-lGLU   \
 		-lGLEW  \
-		-lglfw
+		-lglfw 
+
+CXXFLAGS := -I./vendor/stb_image
 
 BUILT_LIBS := glErrors.a \
 			  Renderer.a \
 			  VertexBuffer.a \
 			  IndexBuffer.a \
 			  VertexArray.a \
-			  Shader.a
+			  Shader.a \
+			  Texture.a \
+			  vendor/stb_image/stb_image.a \
 
 # 
 # -lglut
 
 all:
+
+	
 	$(MAKE) libs
-	$(CXX) main.cpp -o run $(LIBS) $(BUILT_LIBS)
+	$(CXX) $(CXXFLAGS) main.cpp -o run $(LIBS) $(BUILT_LIBS)
 
 libs:
-	$(CXX) -c glErrors.cpp
-	$(CXX) -c Renderer.cpp
-	$(CXX) -c VertexBuffer.cpp
-	$(CXX) -c IndexBuffer.cpp
-	$(CXX) -c VertexArray.cpp
-	$(CXX) -c Shader.cpp
+
+	$(MAKE) -C vendor/stb_image all
+
+	$(CXX) $(CXXFLAGS) -c glErrors.cpp 
+	$(CXX) $(CXXFLAGS) -c Renderer.cpp 
+	$(CXX) $(CXXFLAGS) -c VertexBuffer.cpp 
+	$(CXX) $(CXXFLAGS) -c IndexBuffer.cpp 
+	$(CXX) $(CXXFLAGS) -c VertexArray.cpp 
+	$(CXX) $(CXXFLAGS) -c Shader.cpp 
+	$(CXX) $(CXXFLAGS) -c Texture.cpp 
 	
 	$(AR)  rvs glErrors.a glErrors.o
 	$(AR)  rvs Renderer.a Renderer.o
@@ -35,8 +45,11 @@ libs:
 	$(AR)  rvs IndexBuffer.a IndexBuffer.o
 	$(AR)  rvs VertexArray.a VertexArray.o
 	$(AR)  rvs Shader.a Shader.o
+	$(AR)  rvs Texture.a Texture.o
 
 clean:
 	rm -f run
 	rm -f *.o
 	rm -f *.a
+
+	$(MAKE) -C vendor/stb_image clean

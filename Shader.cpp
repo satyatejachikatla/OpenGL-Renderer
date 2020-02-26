@@ -33,6 +33,9 @@ void Shader::Unbind() const {
 }
 
 // Set Uniforms //
+void Shader::SetUniform1i(const std::string& name,int value) {
+	glCall(glUniform1i(GetUniformLocation(name),value));
+}
 void Shader::SetUniform1f(const std::string& name,float value) {
 	glCall(glUniform1f(GetUniformLocation(name),value));
 }
