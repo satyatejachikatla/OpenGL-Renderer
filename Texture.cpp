@@ -1,4 +1,4 @@
-#include <stb_image.h>
+#include <stb_image/stb_image.h>
 
 #include "glErrors.h"
 #include "Texture.h"

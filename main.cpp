@@ -6,6 +6,9 @@
 #include <GL/glew.h>	// GL Wrangler
 #include <GLFW/glfw3.h> // Window management
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 #include "glErrors.h"
 #include "Renderer.h"
 #include "VertexBuffer.h"
@@ -67,6 +70,8 @@ int main(void) {
 		2,3,0
 	};
 
+	glm::mat4 proj = glm::ortho(-2.0f,2.0f,-1.5f,1.5f,-1.0f,1.0f);
+
 	glCall(glEnable(GL_BLEND));
 	glCall(glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA));
 
@@ -83,12 +88,12 @@ int main(void) {
 	Shader shader("./Basic.shader");
 	shader.Bind();
 	shader.SetUniform4f("u_Color",0.8f,0.3f,0.8f,1.0f);
+	shader.SetUniformMat4f("u_MVP",proj);
 
 	Texture texture("./res/textures/TheCherno.png");
 	texture.Bind(0);
 	shader.SetUniform1i("u_Texture",0);
 
-	/* lets unbind everything */
 	va.Unbind();
 	vb.Unbind();
 	ib.Unbind();

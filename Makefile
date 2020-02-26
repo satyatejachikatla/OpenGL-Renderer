@@ -7,7 +7,7 @@ LIBS := -lGL    \
 		-lGLEW  \
 		-lglfw 
 
-CXXFLAGS := -I./vendor/stb_image
+CXXFLAGS := -I./vendor
 
 BUILT_LIBS := glErrors.a \
 			  Renderer.a \
@@ -29,7 +29,7 @@ all:
 
 libs:
 
-	$(MAKE) -C vendor/stb_image all
+	$(MAKE) -C vendor all
 
 	$(CXX) $(CXXFLAGS) -c glErrors.cpp 
 	$(CXX) $(CXXFLAGS) -c Renderer.cpp 
@@ -52,4 +52,4 @@ clean:
 	rm -f *.o
 	rm -f *.a
 
-	$(MAKE) -C vendor/stb_image clean
+	$(MAKE) -C vendor clean
