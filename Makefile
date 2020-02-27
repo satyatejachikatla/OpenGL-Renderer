@@ -17,6 +17,7 @@ BUILT_LIBS := glErrors.a \
 			  Shader.a \
 			  Texture.a \
 			  vendor/stb_image/stb_image.a \
+			  vendor/imgui/imgui.a
 
 # 
 # -lglut
