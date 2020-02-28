@@ -1,11 +1,12 @@
 #include "glErrors.h"
-#include "Renderer.h"
 #include "Shader.h"
 
 #include <iostream>
 #include <string>
 #include <fstream>
 #include <sstream>
+
+#include <GL/glew.h>
 
 Shader::Shader(const std::string& filepath)
 	: m_FilePath(filepath), m_RendererID(0) {

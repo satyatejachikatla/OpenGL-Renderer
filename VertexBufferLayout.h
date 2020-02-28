@@ -2,7 +2,6 @@
 #define __VERTEX_BUFFER_LAYOUT_H__
 
 #include "glErrors.h"
-#include "Renderer.h"
 #include <vector>
 #include <iostream>
 #include <GL/glew.h>

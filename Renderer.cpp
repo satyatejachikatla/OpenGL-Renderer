@@ -5,6 +5,8 @@
 #include "IndexBuffer.h"
 #include "Shader.h"
 
+#include <GL/glew.h>
+
 void Renderer::Draw(const VertexArray& va,const IndexBuffer& ib,const Shader& shader) {
 	
 	//Shader Bind//
