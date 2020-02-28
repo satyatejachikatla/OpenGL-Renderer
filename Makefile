@@ -7,7 +7,8 @@ LIBS := -lGL    \
 		-lGLEW  \
 		-lglfw 
 
-CXXFLAGS := -I./vendor
+CXXFLAGS := -I./vendor \
+			-I./tests
 
 BUILT_LIBS := glErrors.a \
 			  Renderer.a \
@@ -15,22 +16,26 @@ BUILT_LIBS := glErrors.a \
 			  IndexBuffer.a \
 			  VertexArray.a \
 			  Shader.a \
-			  Texture.a \
-			  vendor/stb_image/stb_image.a \
+			  Texture.a
+
+BUILT_LIBS += vendor/stb_image/stb_image.a \
 			  vendor/imgui/imgui.a
 
-# 
-# -lglut
+BUILT_LIBS += tests/Test.a \
+			  tests/TestClearColor.a
 
 all:
 
-	
 	$(MAKE) libs
+
+	$(MAKE) -C tests all
+
+	$(MAKE) app
+
+app:
 	$(CXX) $(CXXFLAGS) main.cpp -o run $(LIBS) $(BUILT_LIBS)
 
 libs:
-
-	$(MAKE) -C vendor all
 
 	$(CXX) $(CXXFLAGS) -c glErrors.cpp 
 	$(CXX) $(CXXFLAGS) -c Renderer.cpp 
@@ -53,4 +58,4 @@ clean:
 	rm -f *.o
 	rm -f *.a
 
-	$(MAKE) -C vendor clean
+	$(MAKE) -C tests clean
