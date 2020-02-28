@@ -1,5 +1,4 @@
-#ifndef __INDEX_BUFFER_H__
-#define __INDEX_BUFFER_H__
+#pragma once
 
 class IndexBuffer {
 	private:
@@ -14,5 +13,3 @@ class IndexBuffer {
 
 		inline unsigned int GetCount() const { return m_Count;}
 };
-
-#endif /* __VERTEX_BUFFER_H__ */

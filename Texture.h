@@ -1,5 +1,4 @@
-#ifndef __TEXTURE_H__
-#define __TEXTURE_H__
+#pragma once
 
 #include <string>
 
@@ -20,5 +19,3 @@ class Texture {
 		inline int GetHeight() const {return m_Height;}
 };
 
-
-#endif /* __TEXTURE_H__ */

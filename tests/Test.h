@@ -1,5 +1,4 @@
-#ifndef __APPLICATION_TEST_H__
-#define __APPLICATION_TEST_H__
+#pragma once
 
 #include <iostream>
 #include <vector>
@@ -36,5 +35,3 @@ namespace test {
 			std::vector<std::pair<std::string,std::function<Test*()>>> m_Tests;	
 	};
 }
-
-#endif /* __APPLICATION_TEST_H__ */

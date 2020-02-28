@@ -1,7 +1,5 @@
-#include "glErrors.h"
-#include "VertexBuffer.h"
-#include "VertexBufferLayout.h"
-#include "VertexArray.h"
+#include <glErrors.h>
+#include <VertexArray.h>
 #include <GL/glew.h>
 
 VertexArray::VertexArray() {

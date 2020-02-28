@@ -8,21 +8,15 @@ LIBS := -lGL    \
 		-lglfw 
 
 CXXFLAGS := -I./vendor \
-			-I./tests
+			-I./tests \
+			-I. \
+			-Wl,-no-as-needed
 
-BUILT_LIBS := glErrors.a \
-			  Renderer.a \
-			  VertexBuffer.a \
-			  IndexBuffer.a \
-			  VertexArray.a \
-			  Shader.a \
-			  Texture.a
+BUILT_LIBS := *.a
 
 BUILT_LIBS += vendor/stb_image/stb_image.a \
 			  vendor/imgui/imgui.a
 
-BUILT_LIBS += tests/Test.a \
-			  tests/TestClearColor.a
 
 all:
 
@@ -33,7 +27,8 @@ all:
 	$(MAKE) app
 
 app:
-	$(CXX) $(CXXFLAGS) main.cpp -o run $(LIBS) $(BUILT_LIBS)
+	$(CXX) $(CXXFLAGS) -c main.cpp 
+	$(CXX) *.o $(LIBS) $(BUILT_LIBS) -o run
 
 libs:
 
@@ -45,13 +40,7 @@ libs:
 	$(CXX) $(CXXFLAGS) -c Shader.cpp 
 	$(CXX) $(CXXFLAGS) -c Texture.cpp 
 	
-	$(AR)  rvs glErrors.a glErrors.o
-	$(AR)  rvs Renderer.a Renderer.o
-	$(AR)  rvs VertexBuffer.a VertexBuffer.o
-	$(AR)  rvs IndexBuffer.a IndexBuffer.o
-	$(AR)  rvs VertexArray.a VertexArray.o
-	$(AR)  rvs Shader.a Shader.o
-	$(AR)  rvs Texture.a Texture.o
+	$(AR)  rvs built_libs.a *.o
 
 clean:
 	rm -f run

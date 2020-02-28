@@ -1,7 +1,6 @@
-#ifndef __VERTEX_BUFFER_LAYOUT_H__
-#define __VERTEX_BUFFER_LAYOUT_H__
+#pragma once
 
-#include "glErrors.h"
+#include <glErrors.h>
 #include <vector>
 #include <iostream>
 #include <GL/glew.h>
@@ -67,4 +66,3 @@ class VertexBufferLayout {
 	inline unsigned int GetStride() const {return m_Stride;}
 };
 
-#endif /* __VERTEX_BUFFER_LAYOUT_H__ */

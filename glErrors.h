@@ -1,5 +1,4 @@
-#ifndef __GL_ERRORS_H__
-#define __GL_ERRORS_H__
+#pragma once
 
 #include <iostream>
 
@@ -18,4 +17,3 @@ bool GLLogCall();
     call;                                                     \
     ASSERT(GLLogCall());                                      \
 
-#endif /* __GL_ERRORS_H__ */

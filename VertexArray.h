@@ -1,9 +1,8 @@
-#ifndef __VERTEX_ARRAY_H__
-#define __VERTEX_ARRAY_H__
+#pragma once
 
-#include "glErrors.h"
-#include "VertexBuffer.h"
-#include "VertexBufferLayout.h"
+#include <glErrors.h>
+#include <VertexBuffer.h>
+#include <VertexBufferLayout.h>
 
 class VertexArray {
 	private:
@@ -16,5 +15,3 @@ class VertexArray {
 		void Bind() const;
 		void Unbind() const;
 };
-
-#endif /* __VERTEX_ARRAY_H__ */

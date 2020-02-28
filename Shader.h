@@ -1,11 +1,10 @@
-#ifndef __SHADER_H__
-#define __SHADER_H__
+#pragma once
 
 #include <string>
 #include <unordered_map>
 #include <glm/glm.hpp>
 
-#include "glErrors.h"
+#include <glErrors.h>
 
 struct ShaderProgrameSource {
 	std::string VertexSource;
@@ -41,4 +40,4 @@ class Shader {
 
 };
 
-#endif /* __SHADER_H__ */
+

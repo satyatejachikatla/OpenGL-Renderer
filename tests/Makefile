@@ -7,11 +7,15 @@ CXXFLAGS := -I../vendor \
 			-I.
 
 all:
-	$(CXX) $(CXXFLAGS) -c TestClearColor.cpp
 	$(CXX) $(CXXFLAGS) -c Test.cpp
-
-	$(AR)  rvs TestClearColor.a TestClearColor.o
+	$(CXX) $(CXXFLAGS) -c TestClearColor.cpp
+	$(CXX) $(CXXFLAGS) -c TestTexture2D.cpp
+	
 	$(AR)  rvs Test.a Test.o
+	$(AR)  rvs TestClearColor.a TestClearColor.o
+	$(AR)  rvs TestTexture2D.a TestTexture2D.o
+
+	cp *.o ../
 
 
 clean:

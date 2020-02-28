@@ -1,5 +1,4 @@
-#ifndef __TEST_CLEAR_COLOR_H__
-#define __TEST_CLEAR_COLOR_H__
+#pragma once
 
 #include <Test.h>
 
@@ -18,5 +17,3 @@ namespace test {
 
 	};
 }
-
-#endif /* __TEST_CLEAR_COLOR_H__ */
