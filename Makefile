@@ -12,11 +12,11 @@ CXXFLAGS := -I./vendor \
 			-I. \
 			-Wl,-no-as-needed
 
-BUILT_LIBS := *.a
-
-BUILT_LIBS += vendor/stb_image/stb_image.a \
+BUILT_LIBS := vendor/stb_image/stb_image.a \
 			  vendor/imgui/imgui.a
 
+
+OBJS := *.o tests/*.o
 
 all:
 
@@ -28,7 +28,7 @@ all:
 
 app:
 	$(CXX) $(CXXFLAGS) -c main.cpp 
-	$(CXX) *.o $(LIBS) $(BUILT_LIBS) -o run
+	$(CXX) $(OBJS) $(LIBS) $(BUILT_LIBS) -o run
 
 libs:
 
@@ -40,7 +40,7 @@ libs:
 	$(CXX) $(CXXFLAGS) -c Shader.cpp 
 	$(CXX) $(CXXFLAGS) -c Texture.cpp 
 	
-	$(AR)  rvs built_libs.a *.o
+#	$(AR)  rvs built_libs.a *.o
 
 clean:
 	rm -f run
