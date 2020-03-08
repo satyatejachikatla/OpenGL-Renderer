@@ -8,7 +8,7 @@ CXXFLAGS := -I../vendor \
 
 all:
 	$(CXX) $(CXXFLAGS) -c *.cpp
-	$(PYTHON) genFullTestsInclude.py
+	$(PYTHON) genTestInclude.py
 
 clean:
 	rm -f *.o
