@@ -1,5 +1,5 @@
-#include "glErrors.h"
-#include "Renderer.h"
+#include <glErrors.h>
+#include <GL/glew.h>
 #include "IndexBuffer.h"
 
 

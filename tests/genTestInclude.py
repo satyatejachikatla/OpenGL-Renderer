@@ -9,7 +9,7 @@ allTestInclude_gen = open(allTestInclude_gen_path,'w')
 allTestReg_gen = open(allTestReg_gen_path,'w')
 allTestIncludeFiles = glob(dir_path + '/Test*.h')
 allTestIncludeFiles = [ include.split('/')[-1].split('.')[0] for include in allTestIncludeFiles]
-allTestIncludeFiles = set(allTestIncludeFiles) - {'Test'}
+allTestIncludeFiles = sorted(set(allTestIncludeFiles) - {'Test'})
 
 allTestIncludeString = [ '#include <'+include+'.h>' for include in allTestIncludeFiles]
 allTestIncludeString = '\n'.join(allTestIncludeString)

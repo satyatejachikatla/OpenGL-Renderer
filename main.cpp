@@ -15,6 +15,8 @@
 #include <imgui/imgui_impl_glfw.h>
 #include <imgui/imgui_impl_opengl3.h>
 
+#include <InputSystem.h>
+
 /* //Test Includes// */
 #include "tests/Test.h"
 /* Generated Code In Here */
@@ -22,7 +24,7 @@
 /* \\Test Includes\\ */
 
 
-int main(void) {
+int main(int arc,char** argv) {
 
 /* START SETTINGS */
 	GLFWwindow* window;
@@ -45,8 +47,11 @@ int main(void) {
 		return -1;
 	}
 
-	/* Make the window's context current */
+	/* Make the window's interaction callbacks */
 	glCall(glfwMakeContextCurrent(window));
+	glCall(glfwSetCursorPosCallback(window, cursor_position_callback));
+	glCall(glfwSetMouseButtonCallback(window, mouse_button_callback));
+	glCall(glfwSetScrollCallback(window, scroll_callback));
 	/* Vsyncing screen number for proper frame rate*/
 	glCall(glfwSwapInterval(1));
 
@@ -56,8 +61,13 @@ int main(void) {
 		return EXIT_FAILURE;
 	}
 
+
+	/* Set Input Key Callback */
+	glfwSetKeyCallback(window, key_callback);
+
 	/* OpenGl Version */
 	std::cout << "OpenGL Version : " << glGetString(GL_VERSION) << std::endl;
+
 /* END SETTINGS */
 { // Scope Createtion to delete the gl variables before the window exit
 
