@@ -17,8 +17,8 @@
 
 /* //Test Includes// */
 #include "tests/Test.h"
-#include "tests/TestClearColor.h"
-#include "tests/TestTexture2D.h"
+/* Generated Code In Here */
+#include "tests/allTestInclude.h"
 /* \\Test Includes\\ */
 
 
@@ -73,8 +73,8 @@ int main(void) {
 	test::TestMenu* testMenu = new test::TestMenu(currentTest);
 	currentTest = testMenu;
 
-	testMenu->RegisterTest<test::TestClearColor>("Clear_Color");
-	testMenu->RegisterTest<test::TestTexture2D>("2D_Texture");
+	/* Generated Code In Here */
+	#include "tests/allTestReg.h"
 
 	while (!glfwWindowShouldClose(window)) {
 
