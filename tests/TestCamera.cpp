@@ -21,35 +21,38 @@
 
 namespace test {
 
-	TestCamera::TestCamera() :
-		//m_Camera{{-1.0f,1.0f},{-1.0f,1.0f},{1.0f,-1.0f},true}{
-		m_Camera{45.0f,1.0f,0.0f,3.0f}{
+	TestCamera::TestCamera() {
 		float positions[] = {
-			-0.5f, -0.5f, -1.0f, 0.0f, 0.0f, //0
-			 0.5f, -0.5f, -1.0f, 1.0f, 0.0f, //1
-			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f, //2
-			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f, //3
+			-1.0f,  0.0f, 0.0f, 0.0f, 0.0f,  //0
+			 1.0f,  0.0f, 0.0f, 1.0f, 1.0f,  //1
+			 0.0f,  1.0f, 0.0f, 0.5f, 0.5f,  //2
+			 0.0f,  0.0f,-1.0f, 0.0f, 1.0f,  //3
+			 0.0f,  0.0f, 1.0f, 1.0f, 0.0f,  //4
 		};
 
 
 		unsigned int indices[] = {
-			0,1,2,
-			2,3,0
+			4,1,2,
+			0,4,2,
+			1,3,2,
+			3,0,2,
+			0,1,4,
+			0,3,1
 		};
 
 		glCall(glEnable(GL_BLEND));
 		glCall(glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA));
 
 		m_VAO = std::make_unique<VertexArray>();
-		m_VBO = std::make_unique<VertexBuffer>(positions,5*4*sizeof(*positions));
+		m_VBO = std::make_unique<VertexBuffer>(positions,5*5*sizeof(*positions));
 		VertexBufferLayout layout;
 		layout.Push<float>(3);
 		layout.Push<float>(2);
 		m_VAO->AddBuffer(*m_VBO,layout);
-		m_IndexBuffer = std::make_unique<IndexBuffer>(indices,6);
+		m_IndexBuffer = std::make_unique<IndexBuffer>(indices,16);
 
 		m_Shader = std::make_unique<Shader>("./tests/Basic.shader");
-		m_Texture = std::make_unique<Texture>("./res/textures/T1.png");
+		m_Texture = std::make_unique<Texture>("./res/textures/Night_Dance.jpg");
 		
 		m_Shader->Bind();
 		m_Shader->SetUniform1i("u_Texture",0);
@@ -65,7 +68,7 @@ namespace test {
 	void TestCamera::OnRender() {
 
 		glCall(glClearColor(0.0f,0.0f,0.0f,0.0f));
-		glCall(glClear(GL_COLOR_BUFFER_BIT));
+		glCall(glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT));
 
 		Renderer renderer;
 

@@ -74,6 +74,8 @@ int main(int arc,char** argv) {
 	glCall(glEnable(GL_BLEND));
 	glCall(glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA));
 
+	glCall(glEnable(GL_DEPTH_TEST));
+
 	ImGui::CreateContext();
 	ImGui::StyleColorsDark();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
@@ -93,7 +95,7 @@ int main(int arc,char** argv) {
 		ImGui::NewFrame();
 
 		glCall(glClearColor(0.0f,0.0f,0.0f,0.0f));
-		glCall(glClear(GL_COLOR_BUFFER_BIT));
+		glCall(glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT));
 
 		if(currentTest) {
 			currentTest->OnUpdate(0.0f);

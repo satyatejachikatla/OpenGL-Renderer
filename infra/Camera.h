@@ -9,23 +9,26 @@ class Camera {
 	private:
 		static Camera* m_CurrentCam;
 
-		glm::mat4 m_Proj;
+		glm::vec3 m_CameraPos;
+		glm::vec3 m_CameraTarget;
+		glm::vec3 m_CameraDirection;
+		glm::vec3 m_Up; 
+		glm::vec3 m_CameraRight;
+		glm::vec3 m_CameraUp;
 		glm::mat4 m_View;
-
+		glm::mat4 m_Projection;
 		glm::mat4 m_VP;
 
-		glm::vec3 m_Translation;
+
 
 	public:
 		static Camera* getCurrentCamera();
 		static void setCurrentCamera(Camera* cam);
 
-		Camera(glm::vec2 grid_x,glm::vec2 grid_y,glm::vec2 grid_z,bool perspective);
-		Camera(float fov,float aspect,float near,float far);
+		Camera();
 		~Camera();
 
-		void OnUpdate(glm::vec3 update_Translation);
-		void OnUpdate(glm::mat4 update_Mat);
+		void OnUpdate(float r_speed,float i_speed,float camY);
 		void OnImGuiRender();
 
 		glm::mat4 getVP() const {return m_VP;}
