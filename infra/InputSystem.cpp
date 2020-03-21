@@ -31,7 +31,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			pos_updates.z = POS_SPEED;
 	if (keymap[GLFW_KEY_SPACE])
 			pos_updates.y = POS_SPEED;
-	if (keymap[GLFW_KEY_LEFT_ALT])
+	if (keymap[GLFW_KEY_Z])
 			pos_updates.y = -POS_SPEED;
 	if (keymap[GLFW_KEY_LEFT])
 			target_speeds.x = -TARGET_SPEED;
