@@ -9,46 +9,39 @@
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	/*
-	if(action != GLFW_PRESS) {
-		return;
-	}*/
+
+	static std::map<unsigned int,bool> keymap;
+
+	if(action == GLFW_PRESS) {
+		keymap[key] = true;
+	} else if(action == GLFW_RELEASE){
+		keymap[key] = false;
+	}
 
 	glm::vec3 pos_updates = glm::vec3(0.0f,0.0f,0.0f);
 	glm::vec3 target_speeds = glm::vec3(0.0f,0.0f,0.0f);
 
-	switch (key) {
-		case GLFW_KEY_A:
+	if (keymap[GLFW_KEY_A])
 			pos_updates.x = -POS_SPEED;
-			break;
-		case GLFW_KEY_D:
+	if (keymap[GLFW_KEY_D])
 			pos_updates.x = POS_SPEED;
-			break;
-		case GLFW_KEY_W:
+	if (keymap[GLFW_KEY_W])
 			pos_updates.z = -POS_SPEED;
-			break;
-		case GLFW_KEY_S:
+	if (keymap[GLFW_KEY_S])
 			pos_updates.z = POS_SPEED;
-			break;
-		case GLFW_KEY_SPACE:
+	if (keymap[GLFW_KEY_SPACE])
 			pos_updates.y = POS_SPEED;
-			break;
-		case GLFW_KEY_LEFT_ALT:
+	if (keymap[GLFW_KEY_LEFT_ALT])
 			pos_updates.y = -POS_SPEED;
-			break;
-		case GLFW_KEY_LEFT:
+	if (keymap[GLFW_KEY_LEFT])
 			target_speeds.x = -TARGET_SPEED;
-			break;
-		case GLFW_KEY_RIGHT:
+	if (keymap[GLFW_KEY_RIGHT])
 			target_speeds.x = TARGET_SPEED;
-			break;
-		case GLFW_KEY_UP:
+	if (keymap[GLFW_KEY_UP])
 			target_speeds.y = -TARGET_SPEED;
-			break;
-		case GLFW_KEY_DOWN:
+	if (keymap[GLFW_KEY_DOWN])
 			target_speeds.y = TARGET_SPEED;
-			break;
-	}
+
 
 	Camera* cam = Camera::getCurrentCamera();
 	if(cam) {
