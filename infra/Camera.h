@@ -11,6 +11,8 @@ class Camera {
 
 		glm::vec3 m_CameraPos;
 		glm::vec3 m_CameraTarget;
+		glm::vec3 m_CameraTarget_with_straf;
+		glm::vec3 m_Straf;
 		glm::vec3 m_CameraDirection;
 		glm::vec3 m_Up; 
 		glm::vec3 m_CameraRight;
@@ -28,7 +30,10 @@ class Camera {
 		Camera();
 		~Camera();
 
-		void OnUpdate(float r_speed,float i_speed,float camY);
+		void OnUpdatePos(glm::vec3 pos_speeds);
+		void OnUpdateStraf(glm::vec3 Straf);
+		void OnUpdateTarget(glm::vec3 target_speeds);
+		void OnUpdate();
 		void OnImGuiRender();
 
 		glm::mat4 getVP() const {return m_VP;}

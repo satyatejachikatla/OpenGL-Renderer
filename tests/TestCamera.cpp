@@ -49,7 +49,7 @@ namespace test {
 		layout.Push<float>(3);
 		layout.Push<float>(2);
 		m_VAO->AddBuffer(*m_VBO,layout);
-		m_IndexBuffer = std::make_unique<IndexBuffer>(indices,16);
+		m_IndexBuffer = std::make_unique<IndexBuffer>(indices,18);
 
 		m_Shader = std::make_unique<Shader>("./tests/Basic.shader");
 		m_Texture = std::make_unique<Texture>("./res/textures/Night_Dance.jpg");

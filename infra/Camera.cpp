@@ -18,54 +18,75 @@ void Camera::setCurrentCamera(Camera* cam) {
 
 Camera::Camera() {
 
-	m_CameraPos = glm::vec3(0.0f, 3.0f, 3.0f);
+	m_CameraPos    = glm::vec3(0.0f, 3.0f, 3.0f);
 
 	m_CameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
-	m_CameraDirection = glm::normalize(m_CameraPos - m_CameraTarget);
-
-	m_Up = glm::vec3(0.0f, 1.0f, 0.0f); 
-	m_CameraRight = glm::normalize(glm::cross(m_Up, m_CameraDirection));
-
-	m_CameraUp = glm::cross(m_CameraDirection, m_CameraRight);
-
-	m_View = glm::lookAt(m_CameraPos, 
-						 m_CameraTarget, 
-						 m_CameraUp);
+	m_Straf        = glm::vec3(0.0f, 0.0f, 0.0f);
+	m_Up           = glm::vec3(0.0f, 1.0f, 0.0f);
 
 	const float fov = 45;
-	m_Projection = glm::perspective(glm::radians(fov), 1.0f , 0.1f, 100.0f);  
+
+	OnUpdate();
+	
+	m_Projection = glm::perspective(glm::radians(fov), 1.0f , 0.1f, 100.0f);
 }
 
 Camera::~Camera() {
 
 }
 
-void Camera::OnUpdate(float r_speed,float i_speed,float camY) {
-	
-	static float angle = 0;
-	static float radius = 5.0f;
-	static float camY_t = 3.0f;
+void Camera::OnUpdatePos(glm::vec3 pos_speeds) {
 
-	angle += r_speed;	
-	radius += i_speed;
-	camY_t += camY;
-	
-	float camX = sin(angle) * radius;
-	float camZ = cos(angle) * radius;
+	glm::vec3 x_update = glm::normalize(m_CameraRight) * pos_speeds.x;
+	glm::vec3 y_update = glm::normalize(m_CameraUp) * pos_speeds.y;
+	glm::vec3 z_update = glm::normalize(m_CameraDirection) * pos_speeds.z;
 
-	m_View = glm::lookAt(glm::vec3(camX, camY_t ,camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0 ,0.0));
+	m_CameraPos += x_update + y_update + z_update;
+	m_CameraTarget += x_update + y_update + z_update;
+
+	OnUpdate();
+}
+
+void Camera::OnUpdateTarget(glm::vec3 target_speeds) {
+
+	glm::vec3 x_update = glm::normalize(m_CameraRight) * target_speeds.x;
+	glm::vec3 y_update = glm::normalize(m_CameraUp) * target_speeds.y;
+	glm::vec3 z_update = glm::normalize(m_CameraDirection) * target_speeds.z;
+
+	m_CameraTarget += x_update + y_update + z_update;
+
+	OnUpdate();
+}
+
+void Camera::OnUpdateStraf(glm::vec3 Straf) {
+
+	m_Straf = Straf;
+	OnUpdate();
+}
+
+void Camera::OnUpdate() {
+
+	m_CameraTarget_with_straf = m_CameraTarget - m_Straf;
+	m_CameraDirection = glm::normalize(m_CameraPos - m_CameraTarget_with_straf);
+	m_CameraRight = glm::normalize(glm::cross(m_Up, m_CameraDirection));
+	m_CameraUp = glm::cross(m_CameraDirection, m_CameraRight);
+	m_View = glm::lookAt(m_CameraPos, 
+						 m_CameraTarget_with_straf, 
+						 m_CameraUp);
 
 	m_VP = m_Projection * m_View;
+
+	/*
+	std::cout << "Actual Target " <<glm::to_string(m_CameraTarget)<<std::endl;
+	std::cout << "Straf " <<glm::to_string(m_Straf)<<std::endl;
+	std::cout << "Computed Target 	" <<glm::to_string(m_CameraTarget_with_straf)<<std::endl;
+	*/
+
 }
 
 void Camera::OnImGuiRender() {
-/*	
-	ImGui::SliderFloat3("Translation", &m_Translation.x, -5.0f, 5.0f);
-	m_View = glm::translate(glm::mat4(1.0f),m_Translation);
-	m_VP = m_Proj * m_View;
-*/
+	
+	ImGui::SliderFloat3("Camera Target", &m_CameraTarget.x, -1.0f, 1.0f);
+	ImGui::SliderFloat3("Camera Position", &m_CameraPos.x, -1.0f, 1.0f);
+	OnUpdate();
 }
-
-/* Debug examples	
-	//std::cout<<glm::to_string(m_VP)<<std::endl; 
-*/
