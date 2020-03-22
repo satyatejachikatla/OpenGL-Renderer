@@ -32,7 +32,8 @@ Camera::Camera() {
 }
 
 Camera::~Camera() {
-
+	if (getCurrentCamera() == this)
+		setCurrentCamera(nullptr);
 }
 
 void Camera::OnUpdatePos(glm::vec3 pos_speeds) {
@@ -86,7 +87,7 @@ void Camera::OnUpdate() {
 
 void Camera::OnImGuiRender() {
 	
-	ImGui::SliderFloat3("Camera Target", &m_CameraTarget.x, -1.0f, 1.0f);
-	ImGui::SliderFloat3("Camera Position", &m_CameraPos.x, -1.0f, 1.0f);
+	ImGui::SliderFloat3("Camera Target", &m_CameraTarget.x, -10.0f, 10.0f);
+	ImGui::SliderFloat3("Camera Position", &m_CameraPos.x, -10.0f, 10.0f);
 	OnUpdate();
 }
