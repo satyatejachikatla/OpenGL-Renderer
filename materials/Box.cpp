@@ -1,10 +1,17 @@
 #include "Box.h"
 
 #include <Camera.h>
-
+#include <GL/glew.h>
+#include <imgui/imgui.h>
 namespace material {
 
-	Box::Box() {
+	Box::Box(char* img) {
+
+		/* Model Init */
+		m_Rotate = {0.0f,0.0f,0.0f};
+		m_Scale = {1.0f,1.0f,1.0f};
+		m_Translate = {0.0f,0.0f,0.0f};
+		m_Model = glm::mat4(1.0f);
 
 		/* Face 0 */
 		m_Vertices[0].vertexCoords = {-1.0f, -1.0f, -1.0f};
@@ -85,7 +92,7 @@ namespace material {
 		m_VAO->AddBuffer(*m_VBO,layout);
 
 		m_Shader = std::make_unique<Shader>("./res/shaders/Box.shader");
-		m_Texture = std::make_unique<Texture>("./res/textures/Box.png");
+		m_Texture = std::make_unique<Texture>(img);
 		
 		m_Shader->Bind();
 		m_Shader->SetUniform1i("u_Texture",0);
@@ -110,11 +117,25 @@ namespace material {
 	}
 
 	void Box::OnUpdate(){
-		m_Model = glm::translate(glm::mat4(1.0f),glm::vec3(0.0f,0.0f,0.0f));
+		m_Model = glm::mat4(1.0f);
+
+		m_Model = glm::translate(m_Model, m_Translate);
+
+		m_Model = glm::rotate(m_Model, glm::radians(m_Rotate.z), glm::vec3(0.0f,0.0f,1.0f));
+		m_Model = glm::rotate(m_Model, glm::radians(m_Rotate.y), glm::vec3(0.0f,1.0f,0.0f));
+		m_Model = glm::rotate(m_Model, glm::radians(m_Rotate.x), glm::vec3(1.0f,0.0f,0.0f));
+
+		m_Model = glm::scale(m_Model,m_Scale);
+
 	}
 	void Box::OnRender(){
 
-		glm::mat4 mvp = Camera::getCurrentCamera()->getVP();// * m_Model;
+		Camera* camera = Camera::getCurrentCamera();
+
+		if (!camera)
+			return;
+
+		glm::mat4 mvp = camera->getVP() * m_Model;
 
 		m_Texture->Bind(0);
 		m_Shader->Bind();
@@ -122,7 +143,10 @@ namespace material {
 		m_Renderer.Draw(*m_VAO,*m_IndexBuffer,*m_Shader);
 	}
 	void Box::OnImGuiRender(){
-
+		ImGui::SliderFloat3("Translation", &m_Translate.x, -1.0f, 1.0f);
+		ImGui::SliderFloat3("Rotation", &m_Rotate.x, -180.0f, 180.0f);
+		ImGui::SliderFloat3("Scale", &m_Scale.x, 0.0f, 5.0f);
+		OnUpdate();
 	}
 
 }

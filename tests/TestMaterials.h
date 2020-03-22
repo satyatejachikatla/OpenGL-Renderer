@@ -18,6 +18,7 @@ namespace test {
 		private:
 
 			material::Box m_Box;
+			material::Box m_Box_refrence;
 			Camera m_Camera;
 
 

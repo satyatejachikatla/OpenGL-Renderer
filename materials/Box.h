@@ -18,7 +18,7 @@ namespace material {
 
 	class Box {
 		private:
-			Vertex m_Vertices[4*6];
+			Vertex m_Vertices[24];
 
 			std::unique_ptr<VertexArray> m_VAO;
 			std::unique_ptr<VertexBuffer> m_VBO;
@@ -27,10 +27,15 @@ namespace material {
 			std::unique_ptr<Texture> m_Texture;
 
 			Renderer m_Renderer;
+			
+			glm::vec3 m_Rotate;
+			glm::vec3 m_Scale;
+			glm::vec3 m_Translate;
+
 			glm::mat4 m_Model;
 
 		public:
-			Box();
+			Box(char* img);
 			~Box();
 
 			void OnUpdate();

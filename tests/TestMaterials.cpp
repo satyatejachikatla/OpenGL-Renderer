@@ -23,7 +23,7 @@
 
 namespace test {
 
-	TestMaterials::TestMaterials() {
+	TestMaterials::TestMaterials() : m_Box("./res/textures/Box.png") , m_Box_refrence("./res/textures/TheCherno.png") {
 
 
 		glCall(glEnable(GL_BLEND));
@@ -43,10 +43,13 @@ namespace test {
 		glCall(glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT));
 		//glCall(glEnable(GL_CULL_FACE));
 
+		m_Box_refrence.OnRender();
 		m_Box.OnRender();
+
 	}
 	void TestMaterials::OnImGuiRender() {
 		m_Camera.OnImGuiRender();
+		m_Box.OnImGuiRender();
 	}
 
 }
