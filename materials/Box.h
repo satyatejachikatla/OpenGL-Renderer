@@ -8,6 +8,8 @@
 #include <Shader.h>
 #include <Texture.h>
 
+#include <Material.h>
+
 #include <memory>
 
 #include <glm/glm.hpp>
@@ -16,8 +18,9 @@
 
 namespace material {
 
-	class Box {
+	class Box : public  Material{
 		private:
+
 			Vertex m_Vertices[24];
 
 			std::unique_ptr<VertexArray> m_VAO;
@@ -27,20 +30,14 @@ namespace material {
 			std::unique_ptr<Texture> m_Texture;
 
 			Renderer m_Renderer;
-			
-			glm::vec3 m_Rotate;
-			glm::vec3 m_Scale;
-			glm::vec3 m_Translate;
-
-			glm::mat4 m_Model;
 
 		public:
 			Box(char* img);
 			~Box();
 
-			void OnUpdate();
-			void OnRender();
-			void OnImGuiRender();
+			void OnUpdate() override;
+			glm::mat4 OnRender() override;
+			void OnImGuiRender() override;
 			
 	};
 }

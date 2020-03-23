@@ -23,7 +23,7 @@
 
 namespace test {
 
-	TestMaterials::TestMaterials() : m_Box("./res/textures/Box.png") , m_Box_refrence("./res/textures/TheCherno.png") {
+	TestMaterials::TestMaterials() : m_Box("./res/textures/Night_Dance.jpg") , m_Box_refrence("./res/textures/Box.png") {
 
 
 		glCall(glEnable(GL_BLEND));
@@ -50,6 +50,7 @@ namespace test {
 	void TestMaterials::OnImGuiRender() {
 		m_Camera.OnImGuiRender();
 		m_Box.OnImGuiRender();
+		m_Box_refrence.OnImGuiRender();
 	}
 
 }

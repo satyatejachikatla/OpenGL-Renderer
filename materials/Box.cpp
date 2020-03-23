@@ -5,13 +5,7 @@
 #include <imgui/imgui.h>
 namespace material {
 
-	Box::Box(char* img) {
-
-		/* Model Init */
-		m_Rotate = {0.0f,0.0f,0.0f};
-		m_Scale = {1.0f,1.0f,1.0f};
-		m_Translate = {0.0f,0.0f,0.0f};
-		m_Model = glm::mat4(1.0f);
+	Box::Box(char* img) : Material(){
 
 		/* Face 0 */
 		m_Vertices[0].vertexCoords = {-1.0f, -1.0f, -1.0f};
@@ -117,36 +111,24 @@ namespace material {
 	}
 
 	void Box::OnUpdate(){
-		m_Model = glm::mat4(1.0f);
-
-		m_Model = glm::translate(m_Model, m_Translate);
-
-		m_Model = glm::rotate(m_Model, glm::radians(m_Rotate.z), glm::vec3(0.0f,0.0f,1.0f));
-		m_Model = glm::rotate(m_Model, glm::radians(m_Rotate.y), glm::vec3(0.0f,1.0f,0.0f));
-		m_Model = glm::rotate(m_Model, glm::radians(m_Rotate.x), glm::vec3(1.0f,0.0f,0.0f));
-
-		m_Model = glm::scale(m_Model,m_Scale);
-
+		Material::OnUpdate();
 	}
-	void Box::OnRender(){
 
-		Camera* camera = Camera::getCurrentCamera();
+	glm::mat4 Box::OnRender(){
 
-		if (!camera)
-			return;
+		glm::mat4 mvp = Material::OnRender();	
 
-		glm::mat4 mvp = camera->getVP() * m_Model;
+		if (mvp == glm::mat4(0.0f))
+			return mvp;	
 
 		m_Texture->Bind(0);
 		m_Shader->Bind();
 		m_Shader->SetUniformMat4f("u_MVP",mvp);
 		m_Renderer.Draw(*m_VAO,*m_IndexBuffer,*m_Shader);
+
 	}
 	void Box::OnImGuiRender(){
-		ImGui::SliderFloat3("Translation", &m_Translate.x, -1.0f, 1.0f);
-		ImGui::SliderFloat3("Rotation", &m_Rotate.x, -180.0f, 180.0f);
-		ImGui::SliderFloat3("Scale", &m_Scale.x, 0.0f, 5.0f);
-		OnUpdate();
+		Material::OnImGuiRender();
 	}
 
 }
