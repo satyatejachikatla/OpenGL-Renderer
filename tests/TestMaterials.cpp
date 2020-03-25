@@ -23,7 +23,10 @@
 
 namespace test {
 
-	TestMaterials::TestMaterials() : m_Box("./res/textures/TheCherno.png") , m_Box_refrence("./res/textures/Box.png") {
+	TestMaterials::TestMaterials() 
+	: m_Box("./res/textures/TheCherno.png") ,
+	  m_Box_refrence("./res/textures/Box.png"),
+	  m_Plane("./res/textures/Night_Dance.jpg") {
 
 
 		glCall(glEnable(GL_BLEND));
@@ -36,7 +39,9 @@ namespace test {
 	}
 
 	void TestMaterials::OnUpdate(float deltaTime) {
+		m_Box_refrence.OnRender();
 		m_Box.OnUpdate();
+		m_Plane.OnUpdate();
 	}
 	void TestMaterials::OnRender() {
 		glCall(glClearColor(0.0f,0.0f,0.0f,0.0f));
@@ -45,12 +50,14 @@ namespace test {
 
 		m_Box_refrence.OnRender();
 		m_Box.OnRender();
+		m_Plane.OnRender();
 
 	}
 	void TestMaterials::OnImGuiRender() {
 		m_Camera.OnImGuiRender();
 		m_Box.OnImGuiRender();
 		m_Box_refrence.OnImGuiRender();
+		m_Plane.OnImGuiRender();
 	}
 
 }

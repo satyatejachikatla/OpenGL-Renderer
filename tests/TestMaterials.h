@@ -2,6 +2,7 @@
 
 #include <Test.h>
 #include <Box.h>
+#include <Plane.h>
 
 #include <memory>
 
@@ -19,6 +20,7 @@ namespace test {
 
 			material::Box m_Box;
 			material::Box m_Box_refrence;
+			material::Plane m_Plane;
 			Camera m_Camera;
 
 

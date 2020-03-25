@@ -128,6 +128,10 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 	else if(fov >= 45.0f)
 		fov = 45.0f;
 
+	if(!escape_menu_set) {
+		return;
+	}
+
 	Camera* cam = Camera::getCurrentCamera();
 	if(cam) {
 		cam->OnUpdateFOV(fov);

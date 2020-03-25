@@ -1,6 +1,5 @@
 #include "Box.h"
 
-#include <Camera.h>
 #include <GL/glew.h>
 #include <imgui/imgui.h>
 namespace material {
