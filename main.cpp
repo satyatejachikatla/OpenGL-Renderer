@@ -16,6 +16,7 @@
 #include <imgui/imgui_impl_opengl3.h>
 
 #include <InputSystem.h>
+#include <Camera.h>
 
 /* //Test Includes// */
 #include "tests/Test.h"

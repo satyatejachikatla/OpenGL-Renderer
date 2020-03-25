@@ -116,7 +116,7 @@ namespace material {
 
 	glm::mat4 Box::OnRender(){
 
-		glm::mat4 mvp = Material::OnRender();	
+		glm::mat4 mvp = Material::OnRender();
 
 		if (mvp == glm::mat4(0.0f))
 			return mvp;	

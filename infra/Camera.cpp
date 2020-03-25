@@ -18,10 +18,12 @@ void Camera::setCurrentCamera(Camera* cam) {
 
 Camera::Camera() {
 
-	m_CameraPos    = glm::vec3(0.0f, 3.0f, 3.0f);
+	glCall(GLFWwindow* window = glfwGetCurrentContext());
+	glCall(glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED));
 
-	m_CameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
-	m_Straf        = glm::vec3(0.0f, 0.0f, 0.0f);
+	m_CameraPos    = glm::vec3(0.0f, 3.0f, 3.0f);
+	m_CameraFront  = glm::vec3(0.0f, -3.0f, -3.0f);
+
 	m_Up           = glm::vec3(0.0f, 1.0f, 0.0f);
 
 	const float fov = 45;
@@ -43,46 +45,39 @@ void Camera::OnUpdatePos(glm::vec3 pos_speeds) {
 	glm::vec3 z_update = glm::normalize(m_CameraDirection) * pos_speeds.z;
 
 	m_CameraPos += x_update + y_update + z_update;
-	m_CameraTarget += x_update + y_update + z_update;
 
 	OnUpdate();
 }
 
-void Camera::OnUpdateTarget(glm::vec3 target_speeds) {
+void Camera::OnUpdateTarget(glm::vec3 direction) {
 
-	glm::vec3 x_update = glm::normalize(m_CameraRight) * target_speeds.x;
-	glm::vec3 y_update = glm::normalize(m_CameraUp) * target_speeds.y;
-	glm::vec3 z_update = glm::normalize(m_CameraDirection) * target_speeds.z;
+	if(direction == glm::vec3(0.0f,0.0f,0.0f))
+		return;
 
-	m_CameraTarget += x_update + y_update + z_update;
+	m_CameraFront = direction;
 
-	OnUpdate();
-}
-
-void Camera::OnUpdateStraf(glm::vec3 Straf) {
-
-	m_Straf = Straf;
 	OnUpdate();
 }
 
 void Camera::OnUpdate() {
 
-	m_CameraTarget_with_straf = m_CameraTarget - m_Straf;
-	m_CameraDirection = glm::normalize(m_CameraPos - m_CameraTarget_with_straf);
+	m_CameraTarget = m_CameraPos + m_CameraFront;
+	m_CameraDirection = glm::normalize(m_CameraPos - m_CameraTarget);
 	m_CameraRight = glm::normalize(glm::cross(m_Up, m_CameraDirection));
 	m_CameraUp = glm::cross(m_CameraDirection, m_CameraRight);
-	m_View = glm::lookAt(m_CameraPos, 
-						 m_CameraTarget_with_straf, 
-						 m_CameraUp);
 
+	m_View = glm::lookAt(m_CameraPos, m_CameraTarget, m_CameraUp);
 	m_VP = m_Projection * m_View;
 
-	/*
-	std::cout << "Actual Target " <<glm::to_string(m_CameraTarget)<<std::endl;
-	std::cout << "Straf " <<glm::to_string(m_Straf)<<std::endl;
-	std::cout << "Computed Target 	" <<glm::to_string(m_CameraTarget_with_straf)<<std::endl;
-	*/
-
+/*
+	std::cout << "--------------------------------" << std::endl;
+	std::cout << "Pos " <<glm::to_string(m_CameraPos)<<std::endl;
+	std::cout << "Front " <<glm::to_string(m_CameraFront)<<std::endl;
+	std::cout << "Target " <<glm::to_string(m_CameraTarget)<<std::endl;
+	std::cout << "Direction "<<glm::to_string(m_CameraDirection)<<std::endl;
+	std::cout << "Right " << glm::to_string(m_CameraRight)<<std::endl;
+	std::cout << "Up " << glm::to_string(m_CameraUp)<<std::endl; 
+*/
 }
 
 void Camera::OnImGuiRender() {
