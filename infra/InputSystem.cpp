@@ -118,11 +118,20 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-/*
+
+	static double fov = 45.0f;
+
+	fov -= yoffset;
+	
+	if(fov <= 1.0f)
+		fov = 1.0f;
+	else if(fov >= 45.0f)
+		fov = 45.0f;
+
 	Camera* cam = Camera::getCurrentCamera();
 	if(cam) {
-		cam->OnUpdate(glm::vec3(0.0,0.0,SPEED*yoffset));
+		cam->OnUpdateFOV(fov);
 	}
-*/
+
 }
 

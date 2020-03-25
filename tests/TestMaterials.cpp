@@ -23,7 +23,7 @@
 
 namespace test {
 
-	TestMaterials::TestMaterials() : m_Box("./res/textures/Night_Dance.jpg") , m_Box_refrence("./res/textures/Box.png") {
+	TestMaterials::TestMaterials() : m_Box("./res/textures/TheCherno.png") , m_Box_refrence("./res/textures/Box.png") {
 
 
 		glCall(glEnable(GL_BLEND));
@@ -41,7 +41,7 @@ namespace test {
 	void TestMaterials::OnRender() {
 		glCall(glClearColor(0.0f,0.0f,0.0f,0.0f));
 		glCall(glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT));
-		//glCall(glEnable(GL_CULL_FACE));
+		glCall(glEnable(GL_CULL_FACE));
 
 		m_Box_refrence.OnRender();
 		m_Box.OnRender();

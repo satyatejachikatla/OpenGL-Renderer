@@ -28,9 +28,9 @@ Camera::Camera() {
 
 	const float fov = 45;
 
-	OnUpdate();
-	
 	m_Projection = glm::perspective(glm::radians(fov), 1.0f , 0.1f, 100.0f);
+
+	OnUpdate();
 }
 
 Camera::~Camera() {
@@ -55,6 +55,13 @@ void Camera::OnUpdateTarget(glm::vec3 direction) {
 		return;
 
 	m_CameraFront = direction;
+
+	OnUpdate();
+}
+
+void Camera::OnUpdateFOV(float fov) {
+
+	m_Projection = glm::perspective(glm::radians(fov), 1.0f , 0.1f, 100.0f);
 
 	OnUpdate();
 }

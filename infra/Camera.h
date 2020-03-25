@@ -31,6 +31,7 @@ class Camera {
 
 		void OnUpdatePos(glm::vec3 pos_speeds);
 		void OnUpdateTarget(glm::vec3 target_speeds);
+		void OnUpdateFOV(float fov);
 		void OnUpdate();
 		void OnImGuiRender();
 
