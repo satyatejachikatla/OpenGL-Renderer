@@ -37,6 +37,7 @@ class Shader {
 		void SetUniform1f(const std::string& name,float value);
 		void SetUniform1i(const std::string& name,int value);
 		void SetUniformMat4f(const std::string& name,const glm::mat4& matrix);
+		void SetUniform1iv(const std::string& name,unsigned int count ,const int* data);
 
 };
 

@@ -33,6 +33,7 @@ Texture::~Texture() {
 }
 
 void Texture::Bind(unsigned int slot) const {
+	ASSERT(slot < 32 || slot >= 0);
 	glCall(glActiveTexture(GL_TEXTURE0+slot));
 	glCall(glBindTexture(GL_TEXTURE_2D,m_RendererID));
 }

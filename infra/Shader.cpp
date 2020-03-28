@@ -34,6 +34,9 @@ void Shader::Unbind() const {
 }
 
 // Set Uniforms //
+void Shader::SetUniform1iv(const std::string& name,unsigned int count ,const int* data) {
+	glCall(glUniform1iv(GetUniformLocation(name),count,data));
+}
 void Shader::SetUniform1i(const std::string& name,int value) {
 	glCall(glUniform1i(GetUniformLocation(name),value));
 }
@@ -105,7 +108,7 @@ unsigned int Shader::CompileShader(unsigned int type,const std::string& source) 
 	if (result == GL_FALSE) {
 		int length;
 		glCall(glGetShaderiv(id,GL_INFO_LOG_LENGTH,&length));
-		char* message = (char *)alloca(length*sizeof(char));\
+		char* message = (char *)alloca(length*sizeof(char));
 
 		glCall(glGetShaderInfoLog(id,length,&length,message));
 
@@ -128,7 +131,33 @@ unsigned int Shader::CreateShader(const std::string& vertexShader,const std::str
 	glCall(glAttachShader(program,vs));
 	glCall(glAttachShader(program,fs));
 	glCall(glLinkProgram(program));
+
+	int result;
+	bool flag_error = false;
+	glCall(glGetProgramiv(program,GL_LINK_STATUS,&result));
+	if (result == GL_FALSE) {
+		int length = 0;
+		glCall(glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length));
+		char* message = (char *)alloca(length*sizeof(char));
+
+		std::cerr << "Failed to link program" <<std::endl;
+		std::cerr << message <<std::endl;
+
+		flag_error = true;
+	}
+
 	glCall(glValidateProgram(program));
+	glCall(glGetProgramiv(program, GL_VALIDATE_STATUS,&result));
+	if (result == GL_FALSE) {
+		std::cerr << "Failed to validate program" <<std::endl;
+
+		flag_error = true;
+	}
+
+	if(flag_error) {
+		glCall(glDeleteProgram(program));
+		program = 0;
+	}
 
 	glCall(glDeleteShader(vs));
 	glCall(glDeleteShader(fs));

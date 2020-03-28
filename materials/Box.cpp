@@ -61,7 +61,7 @@ namespace material {
 			default:
 				ASSERT(false);
 			}
-			m_Vertices[i].textureId = 0;
+			m_Vertices[i].textureId = 1.0f;
 		}
 
 
@@ -76,6 +76,11 @@ namespace material {
 			indices[i+5] = j;
 		}
 
+		int sampler[32];
+		for(int i=0; i< 32 ; i++) {
+			sampler[i] = i;
+		}
+
 		m_VAO = std::make_unique<VertexArray>();
 		m_VBO = std::make_unique<VertexBuffer>(m_Vertices,24*sizeof(Vertex));
 
@@ -84,15 +89,15 @@ namespace material {
 
 		m_VAO->AddBuffer(*m_VBO,layout);
 
-		m_Shader = std::make_unique<Shader>("./res/shaders/Box.shader");
+		m_Shader = std::make_unique<Shader>("./res/shaders/Material.shader");
 		m_Texture = std::make_unique<Texture>(img);
-		
+
 		m_Shader->Bind();
-		m_Shader->SetUniform1i("u_Texture",0);
+
+		m_Shader->SetUniform1iv("u_Textures",32,sampler);
+		m_Shader->SetUniform1f("u_SelectColorf",0.0f);
 
 		m_IndexBuffer = std::make_unique<IndexBuffer>(indices,36);
-
-		m_Model = glm::translate(glm::mat4(1.0f),glm::vec3(0.0f,0.0f,0.0f));
 
 		/*
 		for(int i =0 ;i < 24 ; i++) {
@@ -118,12 +123,15 @@ namespace material {
 		glm::mat4 mvp = Material::OnRender();
 
 		if (mvp == glm::mat4(0.0f))
-			return mvp;	
+			return glm::mat4(0.0f);
 
-		m_Texture->Bind(0);
+		m_Texture->Bind(1);
 		m_Shader->Bind();
 		m_Shader->SetUniformMat4f("u_MVP",mvp);
+		m_Shader->SetUniform1f("u_SelectColorf",0.0f);
 		m_Renderer.Draw(*m_VAO,*m_IndexBuffer,*m_Shader);
+
+		return glm::mat4(mvp);
 
 	}
 	void Box::OnImGuiRender(){

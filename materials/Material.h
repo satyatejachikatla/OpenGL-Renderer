@@ -10,14 +10,13 @@ namespace material {
 		private:
 			static unsigned int m_MaterialId_Count;
 
+		protected:
 			unsigned int m_MaterialId;
+			glm::mat4 m_Model;
 
 			glm::vec3 m_Rotate;
 			glm::vec3 m_Scale;
 			glm::vec3 m_Translate;
-
-		protected:
-			glm::mat4 m_Model;
 
 		public:
 			Material();

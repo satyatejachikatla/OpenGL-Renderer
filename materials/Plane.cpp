@@ -2,6 +2,8 @@
 
 #include <GL/glew.h>
 #include <imgui/imgui.h>
+#include <sstream>
+
 namespace material {
 
 	Plane::Plane(char* img) : Material(){
@@ -31,7 +33,7 @@ namespace material {
 			default:
 				ASSERT(false);
 			}
-			m_Vertices[i].textureId = 0;
+			m_Vertices[i].textureId = 0.0f;
 		}
 
 
@@ -41,6 +43,11 @@ namespace material {
 			2,3,0
 		};
 
+		int sampler[32];
+		for(int i=0; i< 32 ; i++) {
+			sampler[i] = i;
+		}
+
 		m_VAO = std::make_unique<VertexArray>();
 		m_VBO = std::make_unique<VertexBuffer>(m_Vertices,4*sizeof(Vertex));
 
@@ -49,15 +56,15 @@ namespace material {
 
 		m_VAO->AddBuffer(*m_VBO,layout);
 
-		m_Shader = std::make_unique<Shader>("./res/shaders/Box.shader");
+		m_Shader = std::make_unique<Shader>("./res/shaders/Material.shader");
 		m_Texture = std::make_unique<Texture>(img);
 		
 		m_Shader->Bind();
-		m_Shader->SetUniform1i("u_Texture",0);
+
+		m_Shader->SetUniform1iv("u_Textures",32,sampler);
+		m_Shader->SetUniform1f("u_SelectColorf",0.0f);
 
 		m_IndexBuffer = std::make_unique<IndexBuffer>(indices,6);
-
-		m_Model = glm::translate(glm::mat4(1.0f),glm::vec3(0.0f,0.0f,0.0f));
 
 		/*
 		for(int i =0 ;i < 4 ; i++) {
@@ -83,16 +90,29 @@ namespace material {
 		glm::mat4 mvp = Material::OnRender();
 
 		if (mvp == glm::mat4(0.0f))
-			return mvp;	
+			return glm::mat4(0.0f);	
 
 		m_Texture->Bind(0);
 		m_Shader->Bind();
 		m_Shader->SetUniformMat4f("u_MVP",mvp);
+		m_Shader->SetUniform1f("u_SelectColorf",0.0f);
 		m_Renderer.Draw(*m_VAO,*m_IndexBuffer,*m_Shader);
+		m_Texture->Unbind();
+
+		return glm::mat4(mvp);
 
 	}
 	void Plane::OnImGuiRender(){
-		Material::OnImGuiRender();
+		std::stringstream ss[3];
+
+		ss[0] << m_MaterialId << " Translation";
+		ss[1] << m_MaterialId << " Rotation";
+		ss[2] << m_MaterialId << " Scale";
+
+		ImGui::SliderFloat3(ss[0].str().c_str(), &m_Translate.x, -10.0f, 10.0f);
+		ImGui::SliderFloat3(ss[1].str().c_str(), &m_Rotate.x, -180.0f, 180.0f);
+		ImGui::SliderFloat2(ss[2].str().c_str(), &m_Scale.x, 0.0f, 5.0f);
+		OnUpdate();
 	}
 
 }

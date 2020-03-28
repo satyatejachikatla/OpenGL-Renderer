@@ -9,6 +9,7 @@ class IndexBuffer {
 		~IndexBuffer();
 
 		void Bind() const;
+		void Bind(unsigned int* data) const;
 		void Unbind() const;
 
 		inline unsigned int GetCount() const { return m_Count;}

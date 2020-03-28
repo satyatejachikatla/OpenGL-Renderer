@@ -7,7 +7,7 @@
 
 #include <GL/glew.h>
 
-void Renderer::Draw(const VertexArray& va,const IndexBuffer& ib,const Shader& shader) {
+void Renderer::Draw(const VertexArray& va,const IndexBuffer& ib,const Shader& shader,unsigned int mode) {
 	
 	//Shader Bind//
 	shader.Bind();
@@ -16,7 +16,7 @@ void Renderer::Draw(const VertexArray& va,const IndexBuffer& ib,const Shader& sh
 	// Index Bind //
 	ib.Bind();
 
-	glCall(glDrawElements(GL_TRIANGLES,ib.GetCount(),GL_UNSIGNED_INT,nullptr));
+	glCall(glDrawElements(mode,ib.GetCount(),GL_UNSIGNED_INT,nullptr));
 
 }
 void Renderer::Clear() const{
