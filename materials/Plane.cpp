@@ -2,6 +2,7 @@
 
 #include <GL/glew.h>
 #include <imgui/imgui.h>
+#include <Camera.h>
 #include <sstream>
 
 namespace material {
@@ -13,6 +14,8 @@ namespace material {
 		m_Vertices[1].vertexCoords = { 1.0f, -1.0f, 0.0f};
 		m_Vertices[2].vertexCoords = { 1.0f,  1.0f, 0.0f};
 		m_Vertices[3].vertexCoords = {-1.0f,  1.0f, 0.0f};
+
+		m_Vertices[0].normal = m_Vertices[1].normal = m_Vertices[2].normal= m_Vertices[3].normal = { 0.0f, 0.0f, 1.0f};
 
 		/* Default Vertex Properties */
 		for(int i =0 ; i < 4 ; i++) {
@@ -87,20 +90,42 @@ namespace material {
 
 	glm::mat4 Plane::OnRender(){
 
-		glm::mat4 mvp = Material::OnRender();
+		glm::mat4 m = Material::OnRender();
+		Camera* camera = Camera::getCurrentCamera();
 
-		if (mvp == glm::mat4(0.0f))
-			return glm::mat4(0.0f);	
+		if (m == glm::mat4(0.0f))
+			return glm::mat4(0.0f);
+		if (!camera)
+			return glm::mat4(m);
 
 		m_Texture->Bind(0);
 		m_Shader->Bind();
-		m_Shader->SetUniformMat4f("u_MVP",mvp);
-		m_Shader->SetUniform1f("u_SelectColorf",0.0f);
+		m_Shader->SetUniformMat4f("u_M",m);
+		m_Shader->SetUniformMat4f("u_VP",camera->getVP());
+
+		m_Shader->SetUniformVec3f("viewPos",camera->getPosition());
+		m_Shader->SetUniformVec3f("light.position",glm::vec3(0.0f,0.f,0.0f));
+
+		glm::vec3 lightColor;
+		lightColor.r = 1.0f;
+		lightColor.g = 1.0f;
+		lightColor.b = 1.0f;
+
+		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
+		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
+
+		m_Shader->SetUniformVec3f("light.ambient",ambientColor);
+		m_Shader->SetUniformVec3f("light.diffuse",diffuseColor);
+		m_Shader->SetUniformVec3f("light.specular",glm::vec3(1.0f,1.0f,1.0f));
+
+		m_Shader->SetUniformVec3f("material.ambient",glm::vec3(1.0f,1.0f,1.0f));
+		m_Shader->SetUniformVec3f("material.diffuse",glm::vec3(1.0f,1.0f,1.0f));
+		m_Shader->SetUniformVec3f("material.specular",glm::vec3(0.5f,0.5f,0.5f));
+		m_Shader->SetUniform1f("material.shininess",32.0f);
+
 		m_Renderer.Draw(*m_VAO,*m_IndexBuffer,*m_Shader);
-		m_Texture->Unbind();
 
-		return glm::mat4(mvp);
-
+		return glm::mat4(m);
 	}
 	void Plane::OnImGuiRender(){
 		std::stringstream ss[3];

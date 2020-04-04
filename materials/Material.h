@@ -9,6 +9,7 @@ namespace material {
 	class Material {
 		private:
 			static unsigned int m_MaterialId_Count;
+			static unsigned int m_MaterialId_CurrCount;
 
 		protected:
 			unsigned int m_MaterialId;

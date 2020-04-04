@@ -2,6 +2,7 @@
 
 #include <GL/glew.h>
 #include <imgui/imgui.h>
+#include <Camera.h>
 namespace material {
 
 	Box::Box(char* img) : Material(){
@@ -12,11 +13,15 @@ namespace material {
 		m_Vertices[2].vertexCoords = { 1.0f,  1.0f, -1.0f};
 		m_Vertices[3].vertexCoords = { 1.0f, -1.0f, -1.0f};
 
+		m_Vertices[0].normal = m_Vertices[1].normal = m_Vertices[2].normal= m_Vertices[3].normal = { 0.0f, 0.0f,-1.0f};
+
 		/* Face 1 */
 		m_Vertices[4].vertexCoords = {-1.0f, -1.0f, 1.0f};
 		m_Vertices[5].vertexCoords = { 1.0f, -1.0f, 1.0f};
 		m_Vertices[6].vertexCoords = { 1.0f,  1.0f, 1.0f};
 		m_Vertices[7].vertexCoords = {-1.0f,  1.0f, 1.0f};
+
+		m_Vertices[4].normal = m_Vertices[5].normal = m_Vertices[6].normal= m_Vertices[7].normal = { 0.0f, 0.0f, 1.0f};
 
 		/* Face 2 */
 		m_Vertices[8].vertexCoords  = m_Vertices[5].vertexCoords;
@@ -24,23 +29,31 @@ namespace material {
 		m_Vertices[10].vertexCoords = m_Vertices[2].vertexCoords;
 		m_Vertices[11].vertexCoords = m_Vertices[6].vertexCoords;
 
+		m_Vertices[8].normal = m_Vertices[9].normal = m_Vertices[10].normal= m_Vertices[11].normal = { 1.0f, 0.0f, 0.0f};
+
 		/* Face 3 */
-		m_Vertices[12].vertexCoords = m_Vertices[0].vertexCoords;;
-		m_Vertices[13].vertexCoords = m_Vertices[4].vertexCoords;;
-		m_Vertices[14].vertexCoords = m_Vertices[7].vertexCoords;;
-		m_Vertices[15].vertexCoords = m_Vertices[1].vertexCoords;;
+		m_Vertices[12].vertexCoords = m_Vertices[0].vertexCoords;
+		m_Vertices[13].vertexCoords = m_Vertices[4].vertexCoords;
+		m_Vertices[14].vertexCoords = m_Vertices[7].vertexCoords;
+		m_Vertices[15].vertexCoords = m_Vertices[1].vertexCoords;
+
+		m_Vertices[12].normal = m_Vertices[13].normal = m_Vertices[14].normal= m_Vertices[15].normal = {-1.0f, 0.0f, 0.0f};
 
 		/* Face 4 */
-		m_Vertices[16].vertexCoords = m_Vertices[0].vertexCoords;;
-		m_Vertices[17].vertexCoords = m_Vertices[3].vertexCoords;;
-		m_Vertices[18].vertexCoords = m_Vertices[5].vertexCoords;;
-		m_Vertices[19].vertexCoords = m_Vertices[4].vertexCoords;;
+		m_Vertices[16].vertexCoords = m_Vertices[0].vertexCoords;
+		m_Vertices[17].vertexCoords = m_Vertices[3].vertexCoords;
+		m_Vertices[18].vertexCoords = m_Vertices[5].vertexCoords;
+		m_Vertices[19].vertexCoords = m_Vertices[4].vertexCoords;
+
+		m_Vertices[16].normal = m_Vertices[17].normal = m_Vertices[18].normal= m_Vertices[19].normal = { 0.0f,-1.0f, 0.0f};
 
 		/* Face 5 */
-		m_Vertices[20].vertexCoords = m_Vertices[1].vertexCoords;;
-		m_Vertices[21].vertexCoords = m_Vertices[7].vertexCoords;;
-		m_Vertices[22].vertexCoords = m_Vertices[6].vertexCoords;;
-		m_Vertices[23].vertexCoords = m_Vertices[2].vertexCoords;;
+		m_Vertices[20].vertexCoords = m_Vertices[1].vertexCoords;
+		m_Vertices[21].vertexCoords = m_Vertices[7].vertexCoords;
+		m_Vertices[22].vertexCoords = m_Vertices[6].vertexCoords;
+		m_Vertices[23].vertexCoords = m_Vertices[2].vertexCoords;
+
+		m_Vertices[20].normal = m_Vertices[21].normal = m_Vertices[22].normal= m_Vertices[23].normal = { 0.0f, 1.0f, 0.0f};
 
 		/* Default Vertex Properties */
 		for(int i =0 ; i < 24 ; i++) {
@@ -120,18 +133,42 @@ namespace material {
 
 	glm::mat4 Box::OnRender(){
 
-		glm::mat4 mvp = Material::OnRender();
+		glm::mat4 m = Material::OnRender();
+		Camera* camera = Camera::getCurrentCamera();
 
-		if (mvp == glm::mat4(0.0f))
+		if (m == glm::mat4(0.0f))
 			return glm::mat4(0.0f);
+		if (!camera)
+			return glm::mat4(m);
 
 		m_Texture->Bind(1);
 		m_Shader->Bind();
-		m_Shader->SetUniformMat4f("u_MVP",mvp);
-		m_Shader->SetUniform1f("u_SelectColorf",0.0f);
+		m_Shader->SetUniformMat4f("u_M",m);
+		m_Shader->SetUniformMat4f("u_VP",camera->getVP());
+
+		m_Shader->SetUniformVec3f("viewPos",camera->getPosition());
+		m_Shader->SetUniformVec3f("light.position",glm::vec3(0.0f,0.f,0.0f));
+
+		glm::vec3 lightColor;
+		lightColor.r = 1.0f;
+		lightColor.g = 1.0f;
+		lightColor.b = 1.0f;
+
+		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
+		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
+
+		m_Shader->SetUniformVec3f("light.ambient",ambientColor);
+		m_Shader->SetUniformVec3f("light.diffuse",diffuseColor);
+		m_Shader->SetUniformVec3f("light.specular",glm::vec3(1.0f,1.0f,1.0f));
+
+		m_Shader->SetUniformVec3f("material.ambient",glm::vec3(1.0f,1.0f,1.0f));
+		m_Shader->SetUniformVec3f("material.diffuse",glm::vec3(1.0f,1.0f,1.0f));
+		m_Shader->SetUniformVec3f("material.specular",glm::vec3(0.5f,0.5f,0.5f));
+		m_Shader->SetUniform1f("material.shininess",32.0f);
+
 		m_Renderer.Draw(*m_VAO,*m_IndexBuffer,*m_Shader);
 
-		return glm::mat4(mvp);
+		return glm::mat4(m);
 
 	}
 	void Box::OnImGuiRender(){

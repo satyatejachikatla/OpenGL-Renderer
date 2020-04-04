@@ -1,6 +1,5 @@
 #include "Box.h"
 
-#include <Camera.h>
 #include <GL/glew.h>
 #include <imgui/imgui.h>
 
@@ -10,6 +9,7 @@
 namespace material {
 
 	unsigned int Material::m_MaterialId_Count = 0;
+	unsigned int Material::m_MaterialId_CurrCount = 0;
 
 	Material::Material() {
 
@@ -21,11 +21,12 @@ namespace material {
 
 		m_MaterialId = m_MaterialId_Count;
 		m_MaterialId_Count += 1;
+		m_MaterialId_CurrCount += 1;
 
 	}
 
 	Material::~Material(){
-		
+		m_MaterialId_CurrCount -= 1;
 	}
 
 	void Material::OnUpdate(){
@@ -42,14 +43,7 @@ namespace material {
 	}
 	glm::mat4 Material::OnRender(){
 
-		Camera* camera = Camera::getCurrentCamera();
-
-		if (!camera)
-			return glm::mat4(0.0f);
-
-		glm::mat4 mvp = camera->getVP() * m_Model;
-
-		return mvp;
+		return glm::mat4(m_Model);
 
 	}
 	void Material::OnImGuiRender(){

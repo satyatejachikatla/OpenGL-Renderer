@@ -31,6 +31,7 @@ struct Vertex {
 	glm::vec3 color;
 	glm::vec2 textureCoords;
 	float textureId;
+	glm::vec3 normal;
 };
 
 class VertexBufferLayout {
@@ -90,5 +91,6 @@ class VertexBufferLayout {
 		Push<glm::vec3>(1);
 		Push<glm::vec2>(1);
 		Push<float>(1);
+		Push<glm::vec3>(1);
 	}
 };

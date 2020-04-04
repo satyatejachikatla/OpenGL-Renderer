@@ -17,6 +17,8 @@
 #include <Camera.h>
 
 #include <iostream>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/string_cast.hpp>
 
 namespace test {
@@ -30,10 +32,13 @@ namespace test {
 		m_VAO = std::make_unique<VertexArray>();
 		m_VBO = std::make_unique<VertexBuffer>(nullptr,5*sizeof(Vertex));
 		VertexBufferLayout layout;
-		layout.VertexLayoutAutoFill();
+		layout.Push<glm::vec3>(1);
+		layout.Push<glm::vec3>(1);
+		layout.Push<glm::vec2>(1);
+		layout.Push<float>(1);
 		m_VAO->AddBuffer(*m_VBO,layout);
 
-		m_Shader = std::make_unique<Shader>("./res/shaders/Basic.shader");
+		m_Shader = std::make_unique<Shader>("./res/shaders/Basic2.shader");
 		m_Texture = std::make_unique<Texture>("./res/textures/Night_Dance.jpg");
 		
 		m_Shader->Bind();
@@ -49,12 +54,12 @@ namespace test {
 	}
 	void TestCamera::OnRender() {
 
-		Vertex vertices[] = {
-			{ {-1.0f,  0.0f, 0.0f} ,  {0.0f, 0.0f, 0.0f} ,  {0.0f, 0.0f} ,  0 } , //0
-			{ { 1.0f,  0.0f, 0.0f} ,  {0.0f, 0.0f, 0.0f} ,  {1.0f, 1.0f} ,  0 } , //1
-			{ { 0.0f,  1.0f, 0.0f} ,  {0.0f, 0.0f, 0.0f} ,  {0.5f, 0.5f} ,  0 } , //2
-			{ { 0.0f,  0.0f,-1.0f} ,  {0.0f, 0.0f, 0.0f} ,  {0.0f, 1.0f} ,  0 } , //3
-			{ { 0.0f,  0.0f, 1.0f}  , {0.0f, 0.0f, 0.0f} ,  {1.0f, 0.0f} ,  0 } , //4
+		float vertices[] = {
+			 -1.0f,  0.0f, 0.0f ,  0.0f, 0.0f, 0.0f ,  0.0f, 0.0f ,  0  , //0
+			  1.0f,  0.0f, 0.0f ,  0.0f, 0.0f, 0.0f ,  1.0f, 1.0f ,  0  , //1
+			  0.0f,  1.0f, 0.0f ,  0.0f, 0.0f, 0.0f ,  0.5f, 0.5f ,  0  , //2
+			  0.0f,  0.0f,-1.0f ,  0.0f, 0.0f, 0.0f ,  0.0f, 1.0f ,  0  , //3
+			  0.0f,  0.0f, 1.0f ,  0.0f, 0.0f, 0.0f ,  1.0f, 0.0f ,  0  , //4
 		};
 
 		unsigned int indices1[] = {

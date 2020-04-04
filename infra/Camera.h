@@ -36,6 +36,7 @@ class Camera {
 		void OnImGuiRender();
 
 		glm::mat4 getVP() const {return m_VP;}
+		glm::vec3 getPosition() const {return m_CameraPos;}
 
 
 };
