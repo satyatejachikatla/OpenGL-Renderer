@@ -89,11 +89,6 @@ namespace material {
 			indices[i+5] = j;
 		}
 
-		int sampler[32];
-		for(int i=0; i< 32 ; i++) {
-			sampler[i] = i;
-		}
-
 		m_VAO = std::make_unique<VertexArray>();
 		m_VBO = std::make_unique<VertexBuffer>(m_Vertices,24*sizeof(Vertex));
 
@@ -104,11 +99,10 @@ namespace material {
 
 		m_Shader = std::make_unique<Shader>("./res/shaders/Material.shader");
 		m_Texture = std::make_unique<Texture>(img);
+		m_Texture_2 = std::make_unique<Texture>("./res/textures/box_with_metal_specular.png");
+		
 
 		m_Shader->Bind();
-
-		m_Shader->SetUniform1iv("u_Textures",32,sampler);
-		m_Shader->SetUniform1f("u_SelectColorf",0.0f);
 
 		m_IndexBuffer = std::make_unique<IndexBuffer>(indices,36);
 
@@ -142,36 +136,45 @@ namespace material {
 			return glm::mat4(m);
 
 		m_Texture->Bind(1);
+		m_Texture_2->Bind(0);
 		m_Shader->Bind();
 		m_Shader->SetUniformMat4f("u_M",m);
+		m_Shader->Bind();
 		m_Shader->SetUniformMat4f("u_VP",camera->getVP());
 
-		m_Shader->SetUniformVec3f("viewPos",camera->getPosition());
-		m_Shader->SetUniformVec3f("light.position",glm::vec3(0.0f,0.f,0.0f));
+		m_Shader->Bind();
+		m_Shader->SetUniformVec3f("u_ViewPos",camera->getPosition());
+
+		/* Properties */
+		m_Shader->SetUniform1f("u_Material.selectColor",0.0f);
+		m_Shader->SetUniform1f("u_Material.shininess",32.0f);
+		m_Shader->SetUniform1i("u_Material.texture",1);
+
+		m_Shader->SetUniform1i("u_Material.isSpecularMap",1);
+		m_Shader->SetUniform1i("u_Material.specularMap",0);
+
+		m_Shader->SetUniformVec3f("u_Light.position",glm::vec3(0.0f,0.f,0.0f));
 
 		glm::vec3 lightColor;
 		lightColor.r = 1.0f;
 		lightColor.g = 1.0f;
 		lightColor.b = 1.0f;
 
-		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
-		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
+		glm::vec3 diffuseColor = lightColor * glm::vec3(0.8f);
+		glm::vec3 ambientColor = lightColor * glm::vec3(0.1f);
 
-		m_Shader->SetUniformVec3f("light.ambient",ambientColor);
-		m_Shader->SetUniformVec3f("light.diffuse",diffuseColor);
-		m_Shader->SetUniformVec3f("light.specular",glm::vec3(1.0f,1.0f,1.0f));
+		m_Shader->SetUniformVec3f("u_Light.ambient",ambientColor);
+		m_Shader->SetUniformVec3f("u_Light.diffuse",diffuseColor);
+		m_Shader->SetUniformVec3f("u_Light.specular",glm::vec3(1.0f,1.0f,1.0f)*1.0f);
 
-		m_Shader->SetUniformVec3f("material.ambient",glm::vec3(1.0f,1.0f,1.0f));
-		m_Shader->SetUniformVec3f("material.diffuse",glm::vec3(1.0f,1.0f,1.0f));
-		m_Shader->SetUniformVec3f("material.specular",glm::vec3(0.5f,0.5f,0.5f));
-		m_Shader->SetUniform1f("material.shininess",32.0f);
-
+		/* Draw Call */
 		m_Renderer.Draw(*m_VAO,*m_IndexBuffer,*m_Shader);
 
 		return glm::mat4(m);
 
 	}
 	void Box::OnImGuiRender(){
+		//ImGui::SliderFloat2("Specular ".c_str(), &m_Scale.x, 0.0f, 5.0f);
 		Material::OnImGuiRender();
 	}
 

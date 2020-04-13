@@ -34,6 +34,7 @@ namespace test {
 		glCall(glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA));
 
 		Camera::setCurrentCamera(&m_Camera);
+
 	}
 	TestMaterials::~TestMaterials() {
 

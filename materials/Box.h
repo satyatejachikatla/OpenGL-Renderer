@@ -28,6 +28,7 @@ namespace material {
 			std::unique_ptr<IndexBuffer> m_IndexBuffer;
 
 			std::unique_ptr<Texture> m_Texture;
+			std::unique_ptr<Texture> m_Texture_2;
 			Renderer m_Renderer;
 
 		public:

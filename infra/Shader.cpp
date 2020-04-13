@@ -8,9 +8,10 @@
 
 #include <GL/glew.h>
 
+std::vector<unsigned int> Shader::TotalRendererIDList_;
+
 Shader::Shader(const std::string& filepath)
 	: m_FilePath(filepath), m_RendererID(0) {
-
 
 	ShaderProgrameSource source = ParseShader(filepath);
 //	std::cout << "Vertex" << std::endl;
@@ -20,10 +21,17 @@ Shader::Shader(const std::string& filepath)
 
 
 	glCall(m_RendererID=CreateShader(source.VertexSource,source.FragmentSource));
+
+	if(m_RendererID) TotalRendererIDList_.push_back(m_RendererID);
+
 }
 
 Shader::~Shader() {
 	glCall(glDeleteProgram(m_RendererID));
+	if(m_RendererID) {
+		auto it = std::find(TotalRendererIDList_.begin(), TotalRendererIDList_.end(), m_RendererID);
+		TotalRendererIDList_.erase(it);
+	}
 }
 
 void Shader::Bind() const {

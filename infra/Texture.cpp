@@ -29,7 +29,7 @@ Texture::Texture(const std::string& path) :
 		}
 }
 Texture::~Texture() {
-	glCall(glDeleteTextures(1,&m_RendererID))
+	glCall(glDeleteTextures(1,&m_RendererID));
 }
 
 void Texture::Bind(unsigned int slot) const {

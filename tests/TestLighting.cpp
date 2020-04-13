@@ -24,7 +24,7 @@
 namespace test {
 
 	TestLighting::TestLighting() 
-	: m_Box("./res/textures/Box.png")
+	: m_Box("./res/textures/box_with_metal.png")
 	  //m_Box_center("./res/textures/Box.png")
 	{
 		glCall(glEnable(GL_BLEND));
@@ -33,6 +33,10 @@ namespace test {
 		//m_Box_center.m_Shader->SetUniform1f("u_SelectColorf",1.0f);
 
 		Camera::setCurrentCamera(&m_Camera);
+
+		//for (auto id : Shader::TotalRendererIDList()) std::cout << id << " ";
+		//std::cout << std::endl;
+
 	}
 	TestLighting::~TestLighting() {
 

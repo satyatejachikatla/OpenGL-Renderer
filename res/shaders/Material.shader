@@ -36,18 +36,24 @@ void main()
 layout(location = 0) out vec4 color;
 
 struct Material {
-	vec3 ambient;
-	vec3 diffuse;
-	vec3 specular;
+
+	/* Vertex Color related */
+	float selectColor;
+
+	/* Texture Related */
+	sampler2D texture;
 	float shininess;
+
+	bool isSpecularMap;
+	sampler2D specularMap;
 };
 
 struct Light {
 	vec3 position;
 
-	vec3 ambient;	
-	vec3 diffuse;	
-	vec3 specular;	
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
 };
 
 in vec2 v_TexCoord;
@@ -57,40 +63,44 @@ in float v_TexIndex;
 in vec3 v_FragPos;
 in vec3 v_Normal;
 
-uniform sampler2D u_Textures[32];
-uniform float u_SelectColorf;
+// Camera position
+uniform vec3 u_ViewPos;
 
-uniform vec3 viewPos;    // Camera position
-uniform Material material;
-uniform Light light;
+// Material and Light Properties    
+uniform Material u_Material;
+uniform Light u_Light;
 
 void main()
 {
 
-	highp int index = int(round(v_TexIndex));
+	// Vertex Color Mixing 
+	vec4 SelectColorVec = vec4(1.0f,1.0f,1.0f,1.0f) * u_Material.selectColor;
+	vec4 OneMinusSelectColorVec = vec4(1.0f,1.0f,1.0f,1.0f) - SelectColorVec;
 
-	vec4 SelectColorVec = vec4(u_SelectColorf,u_SelectColorf,u_SelectColorf,u_SelectColorf);
-	vec4 OneMinusSelectColorVec = vec4(1.0f-u_SelectColorf,1.0f-u_SelectColorf,1.0f-u_SelectColorf,1.0f-u_SelectColorf);
-
-	vec4 texColor = OneMinusSelectColorVec * texture(u_Textures[index],v_TexCoord);
+	vec4 texColor = OneMinusSelectColorVec * texture(u_Material.texture,v_TexCoord);
 	texColor += SelectColorVec * v_Color;
 
-	//ambient
-	vec3  ambient = light.ambient * material.ambient;
+	// ambient
+	vec3  ambient = u_Light.ambient;
 
-	//diffuse
+	// diffuse
 	vec3 norm = normalize(v_Normal);
-	vec3 lightDir = normalize(light.position - v_FragPos);
+	vec3 lightDir = normalize(u_Light.position - v_FragPos);
 	float diff = max(dot(norm,lightDir),0.0);
-	vec3 diffuse = light.diffuse * (diff * material.diffuse);
+	vec3 diffuse = u_Light.diffuse * diff;
 
-	//specular
-	vec3 viewDir = normalize(viewPos - v_FragPos);
+	// specular
+	vec3 viewDir = normalize(u_ViewPos - v_FragPos);
 	vec3 reflectDir = reflect(-lightDir,norm);
-	float spec = pow(max(dot(viewDir,reflectDir),0.0f),material.shininess);
-	vec3 specular = light.specular * (spec * material.specular);
+	float spec = pow(max(dot(viewDir,reflectDir),0.0f),u_Material.shininess);
+	vec3 specular;
+	if(u_Material.isSpecularMap)
+		specular = u_Light.specular * (spec *vec3(texture(u_Material.specularMap,v_TexCoord)));
+	else
+		specular = u_Light.specular * spec;
 
+	//Combine everything
 	vec4 result = vec4(ambient + diffuse + specular,1.0f);
 
-	color = result*texColor;
+	color = result * texColor;
 }

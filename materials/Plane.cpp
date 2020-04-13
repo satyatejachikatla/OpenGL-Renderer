@@ -101,27 +101,33 @@ namespace material {
 		m_Texture->Bind(0);
 		m_Shader->Bind();
 		m_Shader->SetUniformMat4f("u_M",m);
+		m_Shader->Bind();
 		m_Shader->SetUniformMat4f("u_VP",camera->getVP());
 
-		m_Shader->SetUniformVec3f("viewPos",camera->getPosition());
-		m_Shader->SetUniformVec3f("light.position",glm::vec3(0.0f,0.f,0.0f));
+		m_Shader->Bind();
+		m_Shader->SetUniformVec3f("u_ViewPos",camera->getPosition());
+
+		/* Properties */
+		m_Shader->SetUniform1f("u_Material.selectColor",0.0f);
+		m_Shader->SetUniform1f("u_Material.shininess",32.0f);
+		m_Shader->SetUniform1i("u_Material.texture",1);
+
+		m_Shader->SetUniform1i("u_Material.isSpecularMap",0);
+		m_Shader->SetUniform1i("u_Material.specularMap",0);
+
+		m_Shader->SetUniformVec3f("u_Light.position",glm::vec3(0.0f,0.f,0.0f));
 
 		glm::vec3 lightColor;
 		lightColor.r = 1.0f;
 		lightColor.g = 1.0f;
 		lightColor.b = 1.0f;
 
-		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
-		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
+		glm::vec3 diffuseColor = lightColor * glm::vec3(0.8f);
+		glm::vec3 ambientColor = lightColor * glm::vec3(0.1f);
 
-		m_Shader->SetUniformVec3f("light.ambient",ambientColor);
-		m_Shader->SetUniformVec3f("light.diffuse",diffuseColor);
-		m_Shader->SetUniformVec3f("light.specular",glm::vec3(1.0f,1.0f,1.0f));
-
-		m_Shader->SetUniformVec3f("material.ambient",glm::vec3(1.0f,1.0f,1.0f));
-		m_Shader->SetUniformVec3f("material.diffuse",glm::vec3(1.0f,1.0f,1.0f));
-		m_Shader->SetUniformVec3f("material.specular",glm::vec3(0.5f,0.5f,0.5f));
-		m_Shader->SetUniform1f("material.shininess",32.0f);
+		m_Shader->SetUniformVec3f("u_Light.ambient",ambientColor);
+		m_Shader->SetUniformVec3f("u_Light.diffuse",diffuseColor);
+		m_Shader->SetUniformVec3f("u_Light.specular",glm::vec3(1.0f,1.0f,1.0f)*1.0f);
 
 		m_Renderer.Draw(*m_VAO,*m_IndexBuffer,*m_Shader);
 

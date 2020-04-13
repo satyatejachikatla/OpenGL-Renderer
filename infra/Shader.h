@@ -2,6 +2,8 @@
 
 #include <string>
 #include <unordered_map>
+#include <vector>
+#include <algorithm>
 #include <glm/glm.hpp>
 
 #include <glErrors.h>
@@ -14,6 +16,8 @@ struct ShaderProgrameSource {
 class Shader {
 
 	private:
+		static std::vector<unsigned int> TotalRendererIDList_;
+
 		unsigned int m_RendererID;
 		std::string m_FilePath;
 		mutable std::unordered_map<std::string,int> m_UniformLocationCache;  
@@ -26,6 +30,9 @@ class Shader {
 		
 
 	public:
+
+		static const std::vector<unsigned int>& TotalRendererIDList() { return TotalRendererIDList_; }
+
 		Shader(const std::string& filepath);
 		~Shader();
 
