@@ -87,6 +87,14 @@ void Camera::OnUpdate() {
 */
 }
 
+void Camera::OnRender(std::vector<Shader*>& shaders){
+	for(auto shader : shaders) {
+		shader->Bind();
+		shader->SetUniformMat4f("u_VP",m_VP);
+		shader->SetUniformVec3f("u_ViewPos",m_CameraPos);
+	}
+}
+
 void Camera::OnImGuiRender() {
 	
 	ImGui::SliderFloat3("Camera Target", &m_CameraTarget.x, -10.0f, 10.0f);

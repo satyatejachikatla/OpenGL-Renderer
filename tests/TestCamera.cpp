@@ -38,7 +38,7 @@ namespace test {
 		layout.Push<float>(1);
 		m_VAO->AddBuffer(*m_VBO,layout);
 
-		m_Shader = std::make_unique<Shader>("./res/shaders/Basic2.shader");
+		m_Shader = std::make_unique<Shader>("./objects/shaders/Basic2.shader");
 		m_Texture = std::make_unique<Texture>("./res/textures/Night_Dance.jpg");
 		
 		m_Shader->Bind();

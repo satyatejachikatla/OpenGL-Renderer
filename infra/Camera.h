@@ -5,6 +5,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <Shader.h>
+
 class Camera {
 	private:
 		static Camera* m_CurrentCam;
@@ -33,6 +35,7 @@ class Camera {
 		void OnUpdateTarget(glm::vec3 target_speeds);
 		void OnUpdateFOV(float fov);
 		void OnUpdate();
+		void OnRender(std::vector<Shader*>& shaders);
 		void OnImGuiRender();
 
 		glm::mat4 getVP() const {return m_VP;}

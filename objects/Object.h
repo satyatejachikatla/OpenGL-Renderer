@@ -1,5 +1,8 @@
 #pragma once
 
+#include <vector>
+#include <memory>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/string_cast.hpp>
@@ -8,11 +11,11 @@ namespace objects {
 
 	class Object {
 		private:
-			static unsigned int m_MaterialId_Count;
-			static unsigned int m_MaterialId_CurrCount;
+			static unsigned int m_Object_Count;
+			static unsigned int m_Object_CurrCount;
 
 		protected:
-			unsigned int m_MaterialId;
+			unsigned int m_ObjectId;
 			glm::mat4 m_Model;
 
 			glm::vec3 m_Rotate;
@@ -23,9 +26,23 @@ namespace objects {
 			Object();
 			~Object();
 
+			unsigned int  getObjectId() const{return m_ObjectId;}
 			virtual void OnUpdate();
-			virtual glm::mat4 OnRender();
+			virtual void OnRender();
 			virtual void OnImGuiRender();
+			
+	};
+
+	class ObjectList :  Object{
+		public:
+			std::vector<std::shared_ptr<Object>>  m_Objects;
+
+			ObjectList();
+			~ObjectList();
+
+			void OnUpdate();
+			void OnRender();
+			void OnImGuiRender();
 			
 	};
 }

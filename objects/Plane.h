@@ -32,11 +32,11 @@ namespace objects {
 			Renderer m_Renderer;
 
 		public:
-			Plane(char* img);
+			Plane(const char* img);
 			~Plane();
 
 			void OnUpdate() override;
-			glm::mat4 OnRender() override;
+			void OnRender() override;
 			void OnImGuiRender() override;
 			
 	};

@@ -7,11 +7,36 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <memory>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-class Lighting {
+class Light {
+
+	public:
+		Light(){}
+		~Light(){}
+
+		virtual void OnRender(std::vector<Shader*>& shaders){}
+		virtual void OnImGuiRender(){}
+};
+
+class LightList : Light{
+
 	private:
+		std::vector<std::shared_ptr<Light>> m_Lights;
+
+	public:
+
+		LightList();
+		~LightList();
+
+		void OnRender(std::vector<Shader*>& shaders);
+		void OnImGuiRender();
+};
+
+class PointLight : Light{
+	protected:
 		glm::vec3 m_Position;
 		glm::vec3 m_Color;
 
@@ -21,8 +46,8 @@ class Lighting {
 
 	public:
 
-		Lighting(glm::vec3 Position,glm::vec3 Color);
-		~Lighting();
+		PointLight(glm::vec3 Position,glm::vec3 Color);
+		~PointLight();
 		
 		void OnUpdatePos(glm::vec3 pos_or_speed,bool is_pos=false);
 		void OnUpdateColor(glm::vec3 Color);
@@ -31,9 +56,6 @@ class Lighting {
 		void OnUpdateDiffuse(glm::vec3 diffuse);
 		void OnUpdateSpecular(glm::vec3 specular);
 
-		void OnUpdateShader(std::vector<Shader*>& shaders);
-		void OnImGuiRender();
+		virtual void OnRender(std::vector<Shader*>& shaders);
+		virtual void OnImGuiRender();
 };
-
-
-

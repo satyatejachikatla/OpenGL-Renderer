@@ -35,11 +35,11 @@ namespace objects {
 
 			std::unique_ptr<Shader> m_Shader;
 
-			Box(char* img);
+			Box(const char* img);
 			~Box();
 
 			void OnUpdate() override;
-			glm::mat4 OnRender() override;
+			void OnRender() override;
 			void OnImGuiRender() override;
 			
 	};

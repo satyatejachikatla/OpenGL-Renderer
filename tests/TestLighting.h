@@ -18,8 +18,7 @@ namespace test {
 
 		private:
 
-			objects::Box m_Box;
-			//objects::Box m_Box_center;
+			objects::ObjectList m_Boxs;
 
 			Camera m_Camera;
 	};

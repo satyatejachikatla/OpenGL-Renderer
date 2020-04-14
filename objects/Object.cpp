@@ -5,11 +5,12 @@
 
 #include <string>
 #include <sstream>
+#include <algorithm>
 
 namespace objects {
 
-	unsigned int Object::m_MaterialId_Count = 0;
-	unsigned int Object::m_MaterialId_CurrCount = 0;
+	unsigned int Object::m_Object_Count = 0;
+	unsigned int Object::m_Object_CurrCount = 0;
 
 	Object::Object() {
 
@@ -19,14 +20,14 @@ namespace objects {
 		m_Translate = {0.0f,0.0f,0.0f};
 		m_Model = glm::mat4(1.0f);
 
-		m_MaterialId = m_MaterialId_Count;
-		m_MaterialId_Count += 1;
-		m_MaterialId_CurrCount += 1;
+		m_ObjectId = m_Object_Count;
+		m_Object_Count += 1;
+		m_Object_CurrCount += 1;
 
 	}
 
 	Object::~Object(){
-		m_MaterialId_CurrCount -= 1;
+		m_Object_CurrCount -= 1;
 	}
 
 	void Object::OnUpdate(){
@@ -41,23 +42,40 @@ namespace objects {
 		m_Model = glm::scale(m_Model,m_Scale);
 
 	}
-	glm::mat4 Object::OnRender(){
-
-		return glm::mat4(m_Model);
+	void Object::OnRender(){
 
 	}
 	void Object::OnImGuiRender(){
 
 		std::stringstream ss[3];
 
-		ss[0] << m_MaterialId << " Translation";
-		ss[1] << m_MaterialId << " Rotation";
-		ss[2] << m_MaterialId << " Scale";
+		ss[0] << m_ObjectId << " Translation";
+		ss[1] << m_ObjectId << " Rotation";
+		ss[2] << m_ObjectId << " Scale";
 
 		ImGui::SliderFloat3(ss[0].str().c_str(), &m_Translate.x, -10.0f, 10.0f);
 		ImGui::SliderFloat3(ss[1].str().c_str(), &m_Rotate.x, -180.0f, 180.0f);
 		ImGui::SliderFloat3(ss[2].str().c_str(), &m_Scale.x, 0.0f, 5.0f);
 		OnUpdate();
+	}
+
+	ObjectList::ObjectList(){}
+	ObjectList::~ObjectList(){}
+
+	void ObjectList::OnUpdate(){
+		for(int i=0;i<m_Objects.size();i++){
+			m_Objects[i]->OnUpdate();
+		}
+	}
+	void ObjectList::OnRender(){
+		for(int i=0;i<m_Objects.size();i++){
+			m_Objects[i]->OnRender();
+		}
+	}
+	void ObjectList::OnImGuiRender(){
+		for(int i=0;i<m_Objects.size();i++){
+			m_Objects[i]->OnImGuiRender();
+		}
 	}
 
 }
