@@ -1,4 +1,4 @@
-#include "Box.h"
+#include "Object.h"
 
 #include <GL/glew.h>
 #include <imgui/imgui.h>
@@ -6,12 +6,12 @@
 #include <string>
 #include <sstream>
 
-namespace material {
+namespace objects {
 
-	unsigned int Material::m_MaterialId_Count = 0;
-	unsigned int Material::m_MaterialId_CurrCount = 0;
+	unsigned int Object::m_MaterialId_Count = 0;
+	unsigned int Object::m_MaterialId_CurrCount = 0;
 
-	Material::Material() {
+	Object::Object() {
 
 		/* Model Init */
 		m_Rotate = {0.0f,0.0f,0.0f};
@@ -25,11 +25,11 @@ namespace material {
 
 	}
 
-	Material::~Material(){
+	Object::~Object(){
 		m_MaterialId_CurrCount -= 1;
 	}
 
-	void Material::OnUpdate(){
+	void Object::OnUpdate(){
 		m_Model = glm::mat4(1.0f);
 
 		m_Model = glm::translate(m_Model, m_Translate);
@@ -41,12 +41,12 @@ namespace material {
 		m_Model = glm::scale(m_Model,m_Scale);
 
 	}
-	glm::mat4 Material::OnRender(){
+	glm::mat4 Object::OnRender(){
 
 		return glm::mat4(m_Model);
 
 	}
-	void Material::OnImGuiRender(){
+	void Object::OnImGuiRender(){
 
 		std::stringstream ss[3];
 

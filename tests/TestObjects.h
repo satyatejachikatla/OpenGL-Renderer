@@ -7,10 +7,10 @@
 #include <memory>
 
 namespace test {
-	class TestMaterials : public Test {
+	class TestObjects : public Test {
 		public:
-			TestMaterials();
-			~TestMaterials();
+			TestObjects();
+			~TestObjects();
 
 			void OnUpdate(float deltaTime) override;
 			void OnRender() override;
@@ -18,9 +18,9 @@ namespace test {
 
 		private:
 
-			material::Box m_Box;
-			material::Box m_Box_refrence;
-			material::Plane m_Plane;
+			objects::Box m_Box;
+			objects::Box m_Box_refrence;
+			objects::Plane m_Plane;
 			Camera m_Camera;
 
 

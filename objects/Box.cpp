@@ -3,9 +3,9 @@
 #include <GL/glew.h>
 #include <imgui/imgui.h>
 #include <Camera.h>
-namespace material {
+namespace objects {
 
-	Box::Box(char* img) : Material(){
+	Box::Box(char* img) : Object(){
 
 		/* Face 0 */
 		m_Vertices[0].vertexCoords = {-1.0f, -1.0f, -1.0f};
@@ -122,12 +122,12 @@ namespace material {
 	}
 
 	void Box::OnUpdate(){
-		Material::OnUpdate();
+		Object::OnUpdate();
 	}
 
 	glm::mat4 Box::OnRender(){
 
-		glm::mat4 m = Material::OnRender();
+		glm::mat4 m = Object::OnRender();
 		Camera* camera = Camera::getCurrentCamera();
 
 		if (m == glm::mat4(0.0f))
@@ -175,7 +175,7 @@ namespace material {
 	}
 	void Box::OnImGuiRender(){
 		//ImGui::SliderFloat2("Specular ".c_str(), &m_Scale.x, 0.0f, 5.0f);
-		Material::OnImGuiRender();
+		Object::OnImGuiRender();
 	}
 
 }

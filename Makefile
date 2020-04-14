@@ -10,7 +10,7 @@ LIBS := -lGL    \
 CXXFLAGS := -I./vendor \
             -I./infra \
 			-I./tests \
-			-I./materials \
+			-I./objects \
 			-I. \
 			-Wl,-no-as-needed
 
@@ -18,12 +18,12 @@ BUILT_LIBS := vendor/stb_image/stb_image.a \
 			  vendor/imgui/imgui.a
 
 
-OBJS := *.o tests/*.o infra/*.o materials/*.o
+OBJS := *.o tests/*.o infra/*.o objects/*.o
 
 all:
 
 	$(MAKE) -C infra all
-	$(MAKE) -C materials all
+	$(MAKE) -C objects all
 	$(MAKE) -C tests all
 	$(MAKE) app
 
@@ -37,5 +37,5 @@ clean:
 	rm -f *.a
 
 	$(MAKE) -C infra clean
-	$(MAKE) -C materials clean
+	$(MAKE) -C objects clean
 	$(MAKE) -C tests clean

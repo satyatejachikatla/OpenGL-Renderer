@@ -8,7 +8,7 @@
 #include <Shader.h>
 #include <Texture.h>
 
-#include <Material.h>
+#include <Object.h>
 
 #include <memory>
 
@@ -16,27 +16,24 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/string_cast.hpp>
 
-namespace material {
+namespace objects {
 
-	class Box : public  Material{
+	class Plane : public  Object{
 		private:
 
-			Vertex m_Vertices[24];
+			Vertex m_Vertices[4];
 
 			std::unique_ptr<VertexArray> m_VAO;
 			std::unique_ptr<VertexBuffer> m_VBO;
 			std::unique_ptr<IndexBuffer> m_IndexBuffer;
-
+			std::unique_ptr<Shader> m_Shader;
 			std::unique_ptr<Texture> m_Texture;
-			std::unique_ptr<Texture> m_Texture_2;
+
 			Renderer m_Renderer;
 
 		public:
-
-			std::unique_ptr<Shader> m_Shader;
-
-			Box(char* img);
-			~Box();
+			Plane(char* img);
+			~Plane();
 
 			void OnUpdate() override;
 			glm::mat4 OnRender() override;

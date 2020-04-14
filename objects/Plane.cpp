@@ -5,9 +5,9 @@
 #include <Camera.h>
 #include <sstream>
 
-namespace material {
+namespace objects {
 
-	Plane::Plane(char* img) : Material(){
+	Plane::Plane(char* img) : Object(){
 
 		/* Face */
 		m_Vertices[0].vertexCoords = {-1.0f, -1.0f, 0.0f};
@@ -46,11 +46,6 @@ namespace material {
 			2,3,0
 		};
 
-		int sampler[32];
-		for(int i=0; i< 32 ; i++) {
-			sampler[i] = i;
-		}
-
 		m_VAO = std::make_unique<VertexArray>();
 		m_VBO = std::make_unique<VertexBuffer>(m_Vertices,4*sizeof(Vertex));
 
@@ -63,9 +58,6 @@ namespace material {
 		m_Texture = std::make_unique<Texture>(img);
 		
 		m_Shader->Bind();
-
-		m_Shader->SetUniform1iv("u_Textures",32,sampler);
-		m_Shader->SetUniform1f("u_SelectColorf",0.0f);
 
 		m_IndexBuffer = std::make_unique<IndexBuffer>(indices,6);
 
@@ -85,12 +77,12 @@ namespace material {
 	}
 
 	void Plane::OnUpdate(){
-		Material::OnUpdate();
+		Object::OnUpdate();
 	}
 
 	glm::mat4 Plane::OnRender(){
 
-		glm::mat4 m = Material::OnRender();
+		glm::mat4 m = Object::OnRender();
 		Camera* camera = Camera::getCurrentCamera();
 
 		if (m == glm::mat4(0.0f))

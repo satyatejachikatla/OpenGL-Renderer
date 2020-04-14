@@ -3,7 +3,7 @@ PYTHON := python3
 
 CXXFLAGS := -I../vendor \
 			-I../infra \
-			-I../materials \
+			-I../objects \
 			-I.. \
 			-I.
 

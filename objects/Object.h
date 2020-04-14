@@ -4,9 +4,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/string_cast.hpp>
 
-namespace material {
+namespace objects {
 
-	class Material {
+	class Object {
 		private:
 			static unsigned int m_MaterialId_Count;
 			static unsigned int m_MaterialId_CurrCount;
@@ -20,8 +20,8 @@ namespace material {
 			glm::vec3 m_Translate;
 
 		public:
-			Material();
-			~Material();
+			Object();
+			~Object();
 
 			virtual void OnUpdate();
 			virtual glm::mat4 OnRender();

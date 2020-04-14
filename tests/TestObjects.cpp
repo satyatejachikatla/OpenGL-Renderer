@@ -16,14 +16,14 @@
 #include <Texture.h>
 #include <Camera.h>
 
-#include <TestMaterials.h>
+#include <TestObjects.h>
 
 #include <iostream>
 #include <glm/gtx/string_cast.hpp>
 
 namespace test {
 
-	TestMaterials::TestMaterials() 
+	TestObjects::TestObjects() 
 	: m_Box("./res/textures/Box.png"),
 	  m_Box_refrence("./res/textures/Night_Dance.jpg"),
 	  m_Plane("./res/textures/Night_Dance.jpg") 
@@ -36,16 +36,16 @@ namespace test {
 		Camera::setCurrentCamera(&m_Camera);
 
 	}
-	TestMaterials::~TestMaterials() {
+	TestObjects::~TestObjects() {
 
 	}
 
-	void TestMaterials::OnUpdate(float deltaTime) {
+	void TestObjects::OnUpdate(float deltaTime) {
 		m_Box.OnUpdate();
 		m_Box_refrence.OnRender();
 		m_Plane.OnUpdate();
 	}
-	void TestMaterials::OnRender() {
+	void TestObjects::OnRender() {
 		glCall(glClearColor(0.0f,0.0f,0.0f,0.0f));
 		glCall(glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT));
 		glCall(glEnable(GL_CULL_FACE));
@@ -55,7 +55,7 @@ namespace test {
 		m_Plane.OnRender();
 
 	}
-	void TestMaterials::OnImGuiRender() {
+	void TestObjects::OnImGuiRender() {
 		m_Camera.OnImGuiRender();
 		m_Box.OnImGuiRender();
 		m_Box_refrence.OnImGuiRender();

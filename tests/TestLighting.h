@@ -18,8 +18,8 @@ namespace test {
 
 		private:
 
-			material::Box m_Box;
-			//material::Box m_Box_center;
+			objects::Box m_Box;
+			//objects::Box m_Box_center;
 
 			Camera m_Camera;
 	};
