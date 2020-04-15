@@ -55,7 +55,7 @@ namespace objects {
 
 		m_VAO->AddBuffer(*m_VBO,layout);
 
-		m_Shader = std::make_unique<Shader>("./objects/shaders/Plane.shader");
+		m_Shader = std::make_unique<Shader>("./objects/shaders/GenericObject.shader");
 		m_Texture = std::make_unique<Texture>(img);
 		
 		m_Shader->Bind();
@@ -92,7 +92,7 @@ namespace objects {
 		if(camera)
 			camera->OnRender(shader_list);
 
-		PointLight new_light(glm::vec3(0.0f,0.0f,0.0f),glm::vec3(1.0f,1.0f,1.0f));
+		DirectionLight new_light(glm::vec3(0.0f,0.0f,-1.0f),glm::vec3(1.0f,1.0f,1.0f));
 		new_light.OnRender(shader_list);
 
 		m_Texture->Bind(0);
