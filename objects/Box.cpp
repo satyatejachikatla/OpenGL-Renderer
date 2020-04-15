@@ -139,8 +139,16 @@ namespace objects {
 		if(camera)
 			camera->OnRender(shader_list);
 
-		DirectionLight new_light(glm::vec3(0.0f,0.0f,-1.0f),glm::vec3(1.0f,1.0f,1.0f));
+		PointLight new_light(glm::vec3(0.0f,0.0f,0.0f),glm::vec3(1.0f,1.0f,1.0f));
+		new_light.OnUpdateAttenuation(glm::vec3(0.0032f,0.09f,1.0f));
 		new_light.OnRender(shader_list);
+		DirectionLight new_light2(glm::vec3(0.0f,0.0f,-1.0f),glm::vec3(1.0f,1.0f,1.0f));
+		new_light2.OnRender(shader_list);
+
+		m_Shader->Bind();
+		m_Shader->SetUniform1f("u_DirectionLightCount",1.0f);
+		m_Shader->SetUniform1f("u_PointLightCount",1.0f);
+		m_Shader->SetUniform1f("u_SpotLightCount",0.0f);
 
 		m_Texture->Bind(1);
 		m_Texture_2->Bind(0);
