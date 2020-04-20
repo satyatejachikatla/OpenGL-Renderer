@@ -233,7 +233,10 @@ vec3 CalcSpotLight(SpotLight light,vec3 normal,vec3 fragPos,vec3 viewDir){
 
 	// Attenuation
 	float d = length(light.position-fragPos);
-	float attenuation = 1.0f/(light.attenuationQuadraticEquation.x*d*d+light.attenuationQuadraticEquation.y*d+light.attenuationQuadraticEquation.z);
+	float attenuation = light.attenuationQuadraticEquation.x*d*d+
+						light.attenuationQuadraticEquation.y*d+
+						light.attenuationQuadraticEquation.z;
+	attenuation = 1.0f/attenuation;
 
 	//Combine everything
 	vec3 result = (ambient + diffuse + specular)*attenuation;

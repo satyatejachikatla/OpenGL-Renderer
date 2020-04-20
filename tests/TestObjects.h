@@ -23,6 +23,8 @@ namespace test {
 			objects::Plane m_Plane;
 			Camera m_Camera;
 
+			light::LightList m_LightList;
+			std::vector<Shader*> shader_list;
 
 	};
 }

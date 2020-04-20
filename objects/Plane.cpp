@@ -92,15 +92,6 @@ namespace objects {
 		if(camera)
 			camera->OnRender(shader_list);
 
-		PointLight new_light(glm::vec3(0.0f,0.0f,-1.0f),glm::vec3(1.0f,1.0f,1.0f));
-		new_light.OnRender(shader_list);
-
-		m_Shader->Bind();
-		m_Shader->SetUniform1f("u_DirectionLightCount",0.0f);
-		m_Shader->SetUniform1f("u_PointLightCount",1.0f);
-		m_Shader->SetUniform1f("u_SpotLightCount",0.0f);
-
-
 		m_Texture->Bind(0);
 		m_Shader->Bind();
 		m_Shader->SetUniformMat4f("u_M",m);

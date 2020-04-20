@@ -26,12 +26,13 @@ namespace objects {
 			std::unique_ptr<VertexArray> m_VAO;
 			std::unique_ptr<VertexBuffer> m_VBO;
 			std::unique_ptr<IndexBuffer> m_IndexBuffer;
-			std::unique_ptr<Shader> m_Shader;
 			std::unique_ptr<Texture> m_Texture;
 
 			Renderer m_Renderer;
 
 		public:
+			std::unique_ptr<Shader> m_Shader;
+
 			Plane(const char* img);
 			~Plane();
 

@@ -3,6 +3,7 @@
 #include <Test.h>
 #include <Box.h>
 #include <Plane.h>
+#include <Lighting.h>
 
 #include <memory>
 
@@ -19,6 +20,8 @@ namespace test {
 		private:
 
 			objects::ObjectList m_Boxs;
+			light::LightList m_LightList;
+			std::vector<Shader*> shader_list;
 
 			Camera m_Camera;
 	};
