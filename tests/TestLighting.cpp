@@ -16,6 +16,8 @@
 #include <Texture.h>
 #include <Camera.h>
 
+#include <memory>
+
 #include <TestLighting.h>
 
 #include <iostream>
@@ -30,6 +32,8 @@ namespace test {
 		m_Boxs.m_Objects.push_back(box);
 		m_LightList.m_Lights.push_back(std::make_shared<light::PointLight>(glm::vec3(0.0f,0.0f,0.0f),glm::vec3(1.0f,1.0f,1.0f)));
 		m_LightList.m_Lights.push_back(std::make_shared<light::DirectionLight>(glm::vec3(0.0f,0.0f,-1.0f),glm::vec3(1.0f,1.0f,1.0f)));
+		splight = std::make_shared<light::SpotLight>(m_Camera.getPosition(),m_Camera.getCameraFront(),glm::vec3(1.0f,1.0f,1.0f));
+		m_LightList.m_Lights.push_back(splight);
 
 		shader_list.push_back(box->m_Shader.get());
 
@@ -44,6 +48,10 @@ namespace test {
 	}
 
 	void TestLighting::OnUpdate(float deltaTime) {
+
+		splight->OnUpdatePosition(m_Camera.getPosition(),true);
+		splight->OnUpdateDirection(m_Camera.getCameraFront());
+
 		m_Boxs.OnUpdate();
 	}
 	void TestLighting::OnRender() {

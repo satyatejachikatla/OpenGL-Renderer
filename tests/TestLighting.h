@@ -21,6 +21,7 @@ namespace test {
 
 			objects::ObjectList m_Boxs;
 			light::LightList m_LightList;
+			std::shared_ptr<light::SpotLight> splight;
 			std::vector<Shader*> shader_list;
 
 			Camera m_Camera;

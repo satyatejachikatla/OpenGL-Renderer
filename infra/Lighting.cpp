@@ -158,8 +158,9 @@ namespace light {
 	SpotLight::SpotLight(glm::vec3 Position,glm::vec3 Direction,glm::vec3 Color)
 		:	m_Position(Position),
 			m_Direction(Direction),
-			m_CutOff(glm::cos(glm::radians(12.5f))),
-			m_OuterCutOff(glm::cos(glm::radians(15.0f))),
+			m_CutOff(10.0f),
+			m_OuterCutOff(20.0f),
+			m_AttenuationQuadraticCoefficients(glm::vec3(0.0f,0.0f,1.0f)),
 			Light(Color){
 
 			for(int i=0;i<=m_SpotLightIdCount;i++){
@@ -180,7 +181,7 @@ namespace light {
 
 	std::string SpotLight::getUniformName(){
 		std::stringstream uniformName;
-		uniformName << "u_SpotLightCount["<<m_SpotLightId<<"]";
+		uniformName << "u_SpotLight["<<m_SpotLightId<<"]";
 		return uniformName.str();
 	}
 
@@ -219,8 +220,8 @@ namespace light {
 	void SpotLight::OnImGuiRender(){
 		ImGui::SliderFloat3("Position ", &m_Position.x, 0.0f, 1.0f);
 		ImGui::SliderFloat3("Direction ", &m_Direction.x, 0.0f, 1.0f);
-		ImGui::SliderFloat3("CutOff ", &m_CutOff, 0.0f, 4.0f);
-		ImGui::SliderFloat3("OuterCutOff ", &m_OuterCutOff, 0.0f, 4.0f);
+		ImGui::SliderFloat("CutOff ", &m_CutOff, 0.0f, 100.0f);
+		ImGui::SliderFloat("OuterCutOff ", &m_OuterCutOff, 0.0f, 100.0f);
 		Light::OnImGuiRender();
 	}
 

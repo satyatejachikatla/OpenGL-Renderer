@@ -213,6 +213,7 @@ vec3 CalcPointLight(PointLight light, vec3 normal , vec3 fragPos , vec3 viewDir)
 	return result;
 }
 vec3 CalcSpotLight(SpotLight light,vec3 normal,vec3 fragPos,vec3 viewDir){
+
 	// ambient
 	vec3  ambient = light.ambient;
 
@@ -231,6 +232,11 @@ vec3 CalcSpotLight(SpotLight light,vec3 normal,vec3 fragPos,vec3 viewDir){
 	else
 		specular = light.specular * spec;
 
+	//Cone calculation
+	float theta = dot(lightDir,normalize(-light.direction));
+	float epsilon = light.cutOff -light.outerCutOff;
+	float intensity = clamp((theta - light.outerCutOff)/epsilon,0.0f,1.0f);
+
 	// Attenuation
 	float d = length(light.position-fragPos);
 	float attenuation = light.attenuationQuadraticEquation.x*d*d+
@@ -239,7 +245,8 @@ vec3 CalcSpotLight(SpotLight light,vec3 normal,vec3 fragPos,vec3 viewDir){
 	attenuation = 1.0f/attenuation;
 
 	//Combine everything
-	vec3 result = (ambient + diffuse + specular)*attenuation;
+	vec3 result = (ambient + diffuse*intensity + specular*intensity)*attenuation;
 
 	return result;
+
 }

@@ -40,6 +40,8 @@ class Camera {
 
 		glm::mat4 getVP() const {return m_VP;}
 		glm::vec3 getPosition() const {return m_CameraPos;}
+		glm::vec3 getCameraTarget() const {return m_CameraTarget;}
+		glm::vec3 getCameraFront() const {return m_CameraFront;}
 
 
 };
