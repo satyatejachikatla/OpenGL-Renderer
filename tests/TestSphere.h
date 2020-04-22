@@ -21,6 +21,8 @@ namespace test {
 			Camera m_Camera;
 
 			std::vector<Shader*> shader_list;
+			light::LightList m_LightList;
+
 
 	};
 }

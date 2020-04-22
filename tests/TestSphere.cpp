@@ -25,8 +25,10 @@
 namespace test {
 
 	TestSphere::TestSphere() 
-	: m_Sphere("./res/textures/Box.png")
+	: m_Sphere("./res/textures/earth.jpg")
 	{
+
+		m_LightList.m_Lights.push_back(std::make_shared<light::DirectionLight>(glm::vec3(0.0f,0.0f,-1.0f),glm::vec3(1.0f,1.0f,1.0f)));
 
 		shader_list.push_back(m_Sphere.m_Shader.get());
 
@@ -48,11 +50,13 @@ namespace test {
 		glCall(glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT));
 		//glCall(glEnable(GL_CULL_FACE));
 
+		m_LightList.OnRender(shader_list);
 		m_Sphere.OnRender();
 	}
 	void TestSphere::OnImGuiRender() {
 		m_Camera.OnImGuiRender();
 		m_Sphere.OnImGuiRender();
+		m_LightList.OnImGuiRender();
 	}
 
 }

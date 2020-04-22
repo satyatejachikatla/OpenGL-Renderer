@@ -112,6 +112,8 @@ namespace objects {
 		m_Shader = std::make_unique<Shader>("./objects/shaders/Sphere.shader");
 		m_Shader->Bind();
 
+		m_Texture = std::make_unique<Texture>(img);
+
 		m_IndexBuffer = std::make_unique<IndexBuffer>(indices.data(),indices.size());
 
 		/*
@@ -145,10 +147,23 @@ namespace objects {
 			camera->OnRender(shader_list);
 
 		m_Shader->Bind();
+
+		/* Material Properties */
+		m_Shader->SetUniform1f("u_Material.selectColor",0.0f);
+		m_Shader->SetUniform1f("u_Material.shininess",32.0f);
+		m_Shader->SetUniform1i("u_Material.texture",0);
+
+		m_Shader->SetUniform1i("u_Material.isSpecularMap",0);
+		m_Shader->SetUniform1i("u_Material.specularMap",0);
+
 		m_Shader->SetUniformMat4f("u_M",m);
 
+		m_Texture->Bind(0);
+
+
+
 		/* Draw Call */
-		m_Renderer.Draw(*m_VAO,*m_IndexBuffer,*m_Shader,GL_POINTS);
+		m_Renderer.Draw(*m_VAO,*m_IndexBuffer,*m_Shader);
 
 	}
 	void Sphere::OnImGuiRender(){
