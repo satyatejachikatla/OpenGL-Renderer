@@ -109,7 +109,7 @@ namespace objects {
 
 		m_VAO->AddBuffer(*m_VBO,layout);
 
-		m_Shader = std::make_unique<Shader>("./objects/shaders/Sphere.shader");
+		m_Shader = std::make_unique<Shader>("./objects/shaders/GenericObject.shader");
 		m_Shader->Bind();
 
 		m_Texture = std::make_unique<Texture>(img);
