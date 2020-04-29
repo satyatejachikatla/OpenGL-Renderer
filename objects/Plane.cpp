@@ -99,7 +99,7 @@ namespace objects {
 		/* Material Properties */
 		m_Shader->SetUniform1f("u_Material.selectColor",0.0f);
 		m_Shader->SetUniform1f("u_Material.shininess",32.0f);
-		m_Shader->SetUniform1i("u_Material.texture",1);
+		m_Shader->SetUniform1i("u_Material.texture",0);
 
 		m_Shader->SetUniform1i("u_Material.isSpecularMap",0);
 		m_Shader->SetUniform1i("u_Material.specularMap",0);

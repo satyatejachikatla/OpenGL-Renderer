@@ -17,20 +17,20 @@
 #include <Camera.h>
 #include <Lighting.h>
 
-#include <TestSphere.h>
+#include <TestLoadingObj.h>
 
 #include <iostream>
 #include <glm/gtx/string_cast.hpp>
 
 namespace test {
 
-	TestSphere::TestSphere() 
-	: m_Sphere("./res/textures/earth_flipped.jpg")
+	TestLoadingObj::TestLoadingObj() 
+	: m_Obj("./objects/objs/stall.obj","./res/textures/stallTexture.png")
 	{
 
 		m_LightList.m_Lights.push_back(std::make_shared<light::DirectionLight>(glm::vec3(0.0f,0.0f,-1.0f),glm::vec3(1.0f,1.0f,1.0f)));
 
-		shader_list.push_back(m_Sphere.m_Shader.get());
+		shader_list.push_back(m_Obj.m_Shader.get());
 
 		glCall(glEnable(GL_BLEND));
 		glCall(glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA));
@@ -38,28 +38,26 @@ namespace test {
 		Camera::setCurrentCamera(&m_Camera);
 
 	}
-	TestSphere::~TestSphere() {
+	TestLoadingObj::~TestLoadingObj() {
 
 	}
 
-	void TestSphere::OnUpdate(float deltaTime) {
-		m_Sphere.OnUpdate();
+	void TestLoadingObj::OnUpdate(float deltaTime) {
+		m_Obj.OnUpdate();
 	}
-	void TestSphere::OnRender() {
+	void TestLoadingObj::OnRender() {
 		glCall(glClearColor(0.0f,0.0f,0.0f,0.0f));
 		glCall(glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT));
-		glCall(glEnable(GL_CULL_FACE));
-		//glCall(glEnable(GL_DEPTH_TEST));
+		//glCall(glEnable(GL_CULL_FACE));
 
 		m_LightList.OnRender(shader_list);
 
-		//glCall(glDepthMask(GL_FALSE));
-		m_Sphere.OnRender();
-		//glCall(lDepthMask(GL_TRUE));
+		m_Obj.OnRender();
+
 	}
-	void TestSphere::OnImGuiRender() {
+	void TestLoadingObj::OnImGuiRender() {
 		m_Camera.OnImGuiRender();
-		m_Sphere.OnImGuiRender();
+		m_Obj.OnImGuiRender();
 		m_LightList.OnImGuiRender();
 	}
 
