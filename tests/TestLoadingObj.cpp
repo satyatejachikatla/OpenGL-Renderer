@@ -28,7 +28,7 @@ namespace test {
 	: m_Obj("./objects/objs/stall.obj","./res/textures/stallTexture.png")
 	{
 
-		m_LightList.m_Lights.push_back(std::make_shared<light::DirectionLight>(glm::vec3(0.0f,0.0f,-1.0f),glm::vec3(1.0f,1.0f,1.0f)));
+		m_LightList.m_Lights.push_back(std::make_shared<light::PointLight>(glm::vec3(0.0f,0.0f,0.0f),glm::vec3(1.0f,1.0f,1.0f)));
 
 		shader_list.push_back(m_Obj.m_Shader.get());
 
