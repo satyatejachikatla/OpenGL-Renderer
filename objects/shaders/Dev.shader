@@ -1,5 +1,6 @@
 #shader vertex
 #version 410 core
+#define PI 3.1415926535897932384626433832795
 
 layout(location = 0) in vec4 position;
 layout(location = 2) in vec2 texCoords;
@@ -10,6 +11,9 @@ out vec3 v_Normal;
 out vec2 v_TexCoord;
 out float v_TexIndex;
 
+uniform float up_down_theta;
+uniform float height_limiter;
+
 uniform mat4 u_VP;
 uniform mat4 u_M;
 
@@ -17,7 +21,10 @@ uniform mat4 u_M;
 void main()
 {
 
-	gl_Position = u_VP*u_M*position;
+	vec4 n_position = position;
+	n_position.y = sin(up_down_theta+PI/2*((int(n_position.x+n_position.z))%4))*height_limiter; 
+
+	gl_Position = u_VP*u_M*n_position;
 
 	v_TexCoord = texCoords;
 }
@@ -48,5 +55,5 @@ void main()
 	// Vertex Color Mixing 
 	vec4 texColor = texture(u_Material.texture,v_TexCoord);
 
-	color = vec4(1.0f,1.0f,1.0f,1.0f);//texColor;
+	color = texColor;
 }
