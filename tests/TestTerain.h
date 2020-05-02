@@ -2,6 +2,7 @@
 
 #include <Test.h>
 #include <Terain.h>
+#include <LoadedObject.h>
 
 #include <memory>
 
@@ -18,6 +19,7 @@ namespace test {
 		private:
 
 			objects::Terain m_Terain;
+			objects::LoadedObject m_Boat;
 			Camera m_Camera;
 
 			std::vector<Shader*> shader_list;

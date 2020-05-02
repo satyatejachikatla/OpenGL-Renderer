@@ -27,6 +27,7 @@ namespace objects {
 			~Object();
 
 			unsigned int  getObjectId() const{return m_ObjectId;}
+			void OnUpdateRotate(glm::vec3 rotate);
 			virtual void OnUpdate();
 			virtual void OnRender();
 			virtual void OnImGuiRender();

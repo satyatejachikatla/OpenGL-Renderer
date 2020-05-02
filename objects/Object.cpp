@@ -30,6 +30,11 @@ namespace objects {
 		m_Object_CurrCount -= 1;
 	}
 
+	void Object::OnUpdateRotate(glm::vec3 rotate){
+		m_Rotate = rotate;
+		OnUpdate();
+	}
+
 	void Object::OnUpdate(){
 		m_Model = glm::mat4(1.0f);
 

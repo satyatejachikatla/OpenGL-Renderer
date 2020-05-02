@@ -93,6 +93,7 @@ namespace objects {
 
 	void Terain::OnUpdate(){
 		Object::OnUpdate();
+		m_Shader->Bind();
 		glCall(m_Shader->SetUniform1f("up_down_theta",glfwGetTime()));
 		glCall(m_Shader->SetUniform1f("height_limiter",0.1));
 	}
@@ -121,8 +122,6 @@ namespace objects {
 		m_Shader->SetUniformMat4f("u_M",m);
 
 		m_Texture->Bind(0);
-
-
 
 		/* Draw Call */
 		m_Renderer.Draw(*m_VAO,*m_IndexBuffer,*m_Shader);
