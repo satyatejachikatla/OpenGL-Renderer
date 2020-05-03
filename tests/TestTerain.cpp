@@ -51,6 +51,7 @@ namespace test {
 		
 		bob.x = sin(glfwGetTime())*1.5;
 		bob.z = cos(glfwGetTime())*1.5;
+		bob.y = 45;
 
 		m_Terain.OnUpdate();
 		m_Boat.OnUpdateRotate(bob);

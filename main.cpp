@@ -42,7 +42,7 @@ int main(int arc,char** argv) {
 	glfwWindowHint(GLFW_OPENGL_PROFILE,GLFW_OPENGL_CORE_PROFILE);
 
 	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow(1000, 1000, "Hello World", NULL, NULL);
+	window = glfwCreateWindow(1000, 1000, "OpenglWindow", NULL, NULL);
 	if (!window) {
 		glfwTerminate();
 		return -1;
@@ -50,9 +50,9 @@ int main(int arc,char** argv) {
 
 	/* Make the window's interaction callbacks */
 	glCall(glfwMakeContextCurrent(window));
-	glCall(glfwSetCursorPosCallback(window, cursor_position_callback));
-	glCall(glfwSetMouseButtonCallback(window, mouse_button_callback));
-	glCall(glfwSetScrollCallback(window, scroll_callback));
+	glCall(glfwSetCursorPosCallback(window, inputsystem::cursor_position_callback));
+	glCall(glfwSetMouseButtonCallback(window, inputsystem::mouse_button_callback));
+	glCall(glfwSetScrollCallback(window, inputsystem::scroll_callback));
 	/* Vsyncing screen number for proper frame rate*/
 	glCall(glfwSwapInterval(1));
 
@@ -64,7 +64,7 @@ int main(int arc,char** argv) {
 
 
 	/* Set Input Key Callback */
-	glfwSetKeyCallback(window, key_callback);
+	glfwSetKeyCallback(window, inputsystem::key_callback);
 
 	/* OpenGl Version */
 	std::cout << "OpenGL Version : " << glGetString(GL_VERSION) << std::endl;
@@ -89,6 +89,9 @@ int main(int arc,char** argv) {
 	/* Generated Code In Here */
 	#include "tests/allTestReg.h"
 
+
+	bool imgui_render = true;
+
 	while (!glfwWindowShouldClose(window)) {
 
 		ImGui_ImplOpenGL3_NewFrame();
@@ -111,10 +114,20 @@ int main(int arc,char** argv) {
 		}
 
 		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
+		/* FIXME : This needs to be driven by centralized Keyboard unit*/
+		if(glfwGetKey(window,GLFW_KEY_HOME) == GLFW_PRESS)
+			imgui_render = true;
+		if(glfwGetKey(window,GLFW_KEY_END) == GLFW_PRESS)
+			imgui_render = false;
+		/*END FIXME */
+
+		if(imgui_render) {
+			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		}
 		glCall(glfwSwapBuffers(window));
 		glCall(glfwPollEvents());
+
 	}
 
 	delete currentTest;

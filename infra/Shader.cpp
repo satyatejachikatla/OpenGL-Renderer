@@ -11,7 +11,7 @@
 std::vector<unsigned int> Shader::TotalRendererIDList_;
 
 Shader::Shader(const std::string& filepath)
-	: m_FilePath(filepath), m_RendererID(0) {
+	: m_FilePath(filepath), m_RendererID(0), m_LoadFailedFlag(false) {
 
 	ShaderProgrameSource source = ParseShader(filepath);
 //	std::cout << "Vertex" << std::endl;
@@ -23,6 +23,7 @@ Shader::Shader(const std::string& filepath)
 	glCall(m_RendererID=CreateShader(source.VertexSource,source.FragmentSource));
 
 	if(m_RendererID) TotalRendererIDList_.push_back(m_RendererID);
+	else m_LoadFailedFlag=true;
 
 }
 
@@ -34,6 +35,8 @@ Shader::~Shader() {
 	}
 }
 
+bool Shader::isLoadFailed() const {return m_LoadFailedFlag;}
+
 void Shader::Bind() const {
 	glCall(glUseProgram(m_RendererID));
 }
@@ -44,6 +47,9 @@ void Shader::Unbind() const {
 // Set Uniforms //
 void Shader::SetUniformVec3f(const std::string& name,const glm::vec3& data) {
 	glCall(glUniform3f(GetUniformLocation(name),data.x,data.y,data.z));
+}
+void Shader::SetUniformVec2f(const std::string& name,const glm::vec2& data) {
+	glCall(glUniform2f(GetUniformLocation(name),data.x,data.y));
 }
 void Shader::SetUniform1iv(const std::string& name,unsigned int count ,const int* data) {
 	glCall(glUniform1iv(GetUniformLocation(name),count,data));
@@ -139,6 +145,13 @@ unsigned int Shader::CreateShader(const std::string& vertexShader,const std::str
 	glCall(unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader));
 	glCall(unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader));
 
+	if(vs == 0 || fs == 0) {
+		glCall(glDeleteProgram(program));
+		program = 0;
+		if (vs != 0) glCall(glDeleteShader(vs));
+		if (fs != 0) glCall(glDeleteShader(fs));
+		return 0;
+	}
 	glCall(glAttachShader(program,vs));
 	glCall(glAttachShader(program,fs));
 	glCall(glLinkProgram(program));
