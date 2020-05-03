@@ -8,6 +8,7 @@ Created a opengl based renderer for rendering simple objects. <br>
 - [OpenGl serier by The Cherno](https://www.youtube.com/playlist?list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2)
 - [ThinMatrix](https://www.youtube.com/watch?v=VS8wlS9hF8E&list=PLRIWtICgwaX0u7Rf9zkZhLoLuZVfUksDP)
 - [LearnOpenGl](https://learnopengl.com/)
+- [The Art of Coding](https://www.youtube.com/watch?v=il_Qg9AqQkE)
 
 ### Screen capture using ffmpeg
 ```
