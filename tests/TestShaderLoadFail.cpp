@@ -22,7 +22,7 @@ namespace test {
 
 	TestShaderLoadFail::TestShaderLoadFail() 
 		: shader_name("./objects/shaders/My.shader"),
-		  texture_name("res/textures/tile.jpg"){
+		  texture_name("./res/textures/gradient.jpg"){
 
 		glCall(window = glfwGetCurrentContext());
 		glCall(glfwGetWindowSize(window, &width, &height));
@@ -67,6 +67,7 @@ namespace test {
 
 	}
 	void TestShaderLoadFail::OnRender() {
+		static float itter = 0;
 		glCall(glClearColor(0.0f,0.0f,0.0f,0.0f));
 		glCall(glClear(GL_COLOR_BUFFER_BIT));
 
@@ -74,6 +75,7 @@ namespace test {
 		glCall(glfwGetCursorPos(window, &xpos, &ypos));
 
 		if(m_Shader->isLoadFailed()|| glfwGetKey(window,GLFW_KEY_ENTER) == GLFW_PRESS){
+			itter = 0;
 			m_Shader.reset();
 			m_Shader = std::make_unique<Shader>(shader_name.c_str());
 		} else {
@@ -81,9 +83,10 @@ namespace test {
 			m_Shader->Bind();
 			m_Shader->SetUniformMat4f("u_P",m_Proj);
 			m_Shader->SetUniform1f("u_Time",glfwGetTime());
+			m_Shader->SetUniform1f("u_Itteration",itter++);
 			m_Shader->SetUniformVec2f("u_Resolution",glm::vec2(width,height));
 			m_Shader->SetUniformVec2f("u_Mouse",glm::vec2(xpos,ypos));
-			m_Shader->SetUniform1i("u_TextureChannel",0);
+			m_Shader->SetUniform1i("u_TextureChannels[0]",0);
 			m_Renderer.Draw(*m_VAO,*m_IndexBuffer,*m_Shader);
 		}
 
