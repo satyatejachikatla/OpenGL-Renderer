@@ -23,6 +23,18 @@
 #include <TestShaderLoadFail.h>
 /* \\Test Includes\\ */
 
+test::Test* currentTest=nullptr;
+
+void window_size_callback(GLFWwindow* window, int width, int height)
+{
+	if(!currentTest)
+		return;
+
+	delete currentTest;
+	glCall(glViewport(0, 0, width, height));
+	currentTest = new test::TestShaderLoadFail();
+}
+
 
 int main(int arc,char** argv) {
 
@@ -46,6 +58,9 @@ int main(int arc,char** argv) {
 		glfwTerminate();
 		return -1;
 	}
+
+	/*Window Rezie*/
+	glCall(glfwSetWindowSizeCallback(window, window_size_callback));
 
 	/* Make the window's interaction callbacks */
 	glCall(glfwMakeContextCurrent(window));
@@ -81,9 +96,8 @@ int main(int arc,char** argv) {
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 130");
 
-	test::Test* currentTest=nullptr;
-	test::Test* testMenu = new test::TestShaderLoadFail();
-	currentTest = testMenu;
+
+	currentTest = new test::TestShaderLoadFail();
 
 
 	bool imgui_render = true;
@@ -123,9 +137,6 @@ int main(int arc,char** argv) {
 	}
 
 	delete currentTest;
-	if (currentTest != testMenu) {
-		delete testMenu;
-	}
 
 }
 	ImGui_ImplOpenGL3_Shutdown();
