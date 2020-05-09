@@ -4,6 +4,7 @@
 
 
 #include <imgui/imgui.h>
+#include <imgui/misc/cpp/imgui_stdlib.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -21,8 +22,7 @@
 namespace test {
 
 	TestShaderLoadFail::TestShaderLoadFail() 
-		: shader_name("./objects/shaders/My.shader"),
-		  texture_name("./res/textures/gradient.jpg"){
+		: shader_name("./objects/shaders/My.shader") {
 
 		glCall(window = glfwGetCurrentContext());
 		glCall(glfwGetWindowSize(window, &width, &height));
@@ -53,8 +53,12 @@ namespace test {
 		m_VAO->AddBuffer(*m_VBO,layout);
 		m_IndexBuffer = std::make_unique<IndexBuffer>(indices,6);
 
-		m_Texture = std::make_unique<Texture>(texture_name.c_str());
-		m_Texture->Bind(0);
+
+		for(int i=0;i<5;i++){
+			texture_name[i] = std::string("./res/textures/gradient.jpg");
+			m_Texture[i] = std::make_unique<Texture>(texture_name[i].c_str());
+			m_Texture[i]->Bind(i);
+		}
 
 		m_Shader = std::make_unique<Shader>(shader_name.c_str());
 
@@ -78,8 +82,15 @@ namespace test {
 			itter = 0;
 			m_Shader.reset();
 			m_Shader = std::make_unique<Shader>(shader_name.c_str());
+
+			for(int i=0;i<5;i++){
+				m_Texture[i].reset();
+				m_Texture[i] = std::make_unique<Texture>(texture_name[i].c_str());
+				m_Texture[i]->Bind(i);
+			}
 		} else {
-			m_Texture->Bind(0);
+			for(int i=0;i<5;i++)
+				m_Texture[i]->Bind(i);
 			m_Shader->Bind();
 			m_Shader->SetUniformMat4f("u_P",m_Proj);
 			m_Shader->SetUniform1f("u_Time",glfwGetTime());
@@ -87,11 +98,21 @@ namespace test {
 			m_Shader->SetUniformVec2f("u_Resolution",glm::vec2(width,height));
 			m_Shader->SetUniformVec2f("u_Mouse",glm::vec2(xpos,ypos));
 			m_Shader->SetUniform1i("u_TextureChannels[0]",0);
+			m_Shader->SetUniform1i("u_TextureChannels[1]",1);
+			m_Shader->SetUniform1i("u_TextureChannels[2]",2);
+			m_Shader->SetUniform1i("u_TextureChannels[3]",3);
+			m_Shader->SetUniform1i("u_TextureChannels[4]",4);
 			m_Renderer.Draw(*m_VAO,*m_IndexBuffer,*m_Shader);
 		}
 
 	}
 	void TestShaderLoadFail::OnImGuiRender() {
+		ImGui:: InputText("File Name:",&shader_name);
+		ImGui:: InputText("Texture 0:",&texture_name[0]);
+		ImGui:: InputText("Texture 1:",&texture_name[1]);
+		ImGui:: InputText("Texture 2:",&texture_name[2]);
+		ImGui:: InputText("Texture 3:",&texture_name[3]);
+		ImGui:: InputText("Texture 4:",&texture_name[4]);
 	}
 
 }

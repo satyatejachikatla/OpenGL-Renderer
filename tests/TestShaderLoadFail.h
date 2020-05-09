@@ -30,7 +30,7 @@ namespace test {
 			std::unique_ptr<IndexBuffer> m_IndexBuffer;
 			std::unique_ptr<Shader> m_Shader;
 			std::unique_ptr<VertexBuffer> m_VBO;
-			std::unique_ptr<Texture> m_Texture;
+			std::unique_ptr<Texture> m_Texture[5];
 
 			glm::mat4 m_Proj;
 
@@ -41,6 +41,6 @@ namespace test {
 
 
 			std::string shader_name;
-			std::string texture_name;
+			std::string texture_name[5];
 	};
 }

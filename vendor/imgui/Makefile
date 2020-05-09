@@ -26,6 +26,7 @@ all:
 
 	$(CXX) $(CXXFLAGS) -c -o ./imgui_impl_sdl.o ./imgui_impl_glfw.cpp $(LIBS)
 	$(CXX) $(CXXFLAGS) -c -o ./imgui_impl_opengl3.o ./imgui_impl_opengl3.cpp $(LIBS)
+	$(CXX) $(CXXFLAGS) -c -o ./imgui_stdlib.o ./misc/cpp/imgui_stdlib.cpp  $(LIBS)
 	$(CXX) $(CXXFLAGS) -c -o ./imgui.o ./imgui.cpp  $(LIBS)
 	$(CXX) $(CXXFLAGS) -c -o ./imgui_demo.o ./imgui_demo.cpp  $(LIBS)
 	$(CXX) $(CXXFLAGS) -c -o ./imgui_draw.o ./imgui_draw.cpp  $(LIBS)

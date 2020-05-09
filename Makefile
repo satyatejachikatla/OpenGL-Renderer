@@ -18,7 +18,7 @@ BUILT_LIBS := vendor/stb_image/stb_image.a \
 			  vendor/imgui/imgui.a
 
 
-OBJS := *.o tests/*.o infra/*.o objects/*.o
+OBJS := tests/*.o infra/*.o objects/*.o
 
 all:
 
@@ -29,10 +29,14 @@ all:
 
 app:
 	$(CXX) $(CXXFLAGS) -c main.cpp 
-	$(CXX) $(OBJS) $(LIBS) $(BUILT_LIBS) -o run
+	$(CXX) main.o $(OBJS) $(LIBS) $(BUILT_LIBS) -o run
+
+	$(CXX) $(CXXFLAGS) -c shader_toy.cpp
+	$(CXX) shader_toy.o $(OBJS) $(LIBS) $(BUILT_LIBS) -o toy
 
 clean:
 	rm -f run
+	rm -f toy
 	rm -f *.o
 	rm -f *.a
 
