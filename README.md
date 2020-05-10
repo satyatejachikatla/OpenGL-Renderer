@@ -1,7 +1,6 @@
 # OpenGL Basic Renderer
 
 Created a opengl based renderer for rendering simple objects. <br>
-![Fractal](https://github.com/turrentrock/OpenGL-Renderer/blob/master/res/pictures/fractal.gif)
 ![Sphere](https://github.com/turrentrock/OpenGL-Renderer/blob/master/res/pictures/earth.png)
 ![Stall](https://github.com/turrentrock/OpenGL-Renderer/blob/master/res/pictures/stall.png)
 ### Resources:
