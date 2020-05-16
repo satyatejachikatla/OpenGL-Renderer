@@ -22,7 +22,7 @@
 namespace test {
 
 	TestShaderLoadFail::TestShaderLoadFail() 
-		: shader_name("./objects/shaders/My.shader") {
+		: shader_name("./shader_programs/Test.shader") {
 
 		glCall(window = glfwGetCurrentContext());
 		glCall(glfwGetWindowSize(window, &width, &height));
