@@ -65,7 +65,10 @@ void main()
 	vec2 fragCoords = v_position.xy;
 	vec2 uv = (fragCoords-.5*u_Resolution.xy)/u_Resolution.y;
 	vec2 mouse = (u_Mouse-0.5*u_Resolution)/u_Resolution.y;
-	vec3 col = vec3(0.);
+	
+	// ./shader_programs/samples/distortion.shader
+	vec3 col = texture(u_TextureChannels[0],uv).rgb;
+	//vec3 col = vec3(0.);
 
 	float shear=0.2;
 
@@ -102,8 +105,8 @@ void main()
 	//Simple Rectangle
 	float c1 = rectangle(uv,mouse_control,wh,blur);
 
-	col +=  vec3(1.0) * c1;
+	col =  col * c1;
 
-	fragColor = vec4(col,1.0);
+	fragColor = vec4(abs(col),1.0);
 
 }
