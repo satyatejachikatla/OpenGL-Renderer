@@ -54,7 +54,7 @@ float mod(float x, float y)
   return x - y * trunc(x/y);
 }
 
-vec4 Eye(vec2 uv,vec2 mouse){
+vec4 Eye(vec2 uv,float side,vec2 mouse){
 
 	uv -= .5;
 	float d = length(uv);
@@ -69,6 +69,13 @@ vec4 Eye(vec2 uv,vec2 mouse){
 	col.rgb = mix(col.rgb,irisCol.rgb,S(.28,.25,d));
 
 	col.rgb = mix(col.rgb,vec3(0.),S(.16,.14,d));
+
+
+	float t=u_Time*2.;
+	uv.x *= side;
+
+	uv.x += sin(t+uv.y*15.)*.03;
+	uv.y += sin(t+uv.x*7.)*.03;
 
 	float highlight = S(.1,.09,length(uv-vec2(-.15,.15)));
 	highlight += S(.07,.05,length(uv+vec2(-.08,.08)));
@@ -116,6 +123,7 @@ vec4 Head(vec2 uv,vec2 mouse){
 
 	float highlight = S(0.41,0.405,d);
 	highlight *= remap(.41,-.1,.75,0.,uv.y);
+	highlight *= S(.18,.19,length(uv-vec2(.21,.08)));
 	col.rgb = mix(col.rgb,vec3(1.),highlight);
 
 	d = length(uv - vec2(.25,-.2));
@@ -128,10 +136,10 @@ vec4 Head(vec2 uv,vec2 mouse){
 vec4 Smiley(vec2 uv,vec2 mouse){
 
 	vec4 col = vec4(0.);
-
+	float side = sign(uv.x);
 	uv.x = abs(uv.x);
 	vec4 head = Head(uv,mouse);
-	vec4 eye = Eye(within(uv,vec4(.03,-.1,.37,.25)),mouse);
+	vec4 eye = Eye(within(uv,vec4(.03,-.1,.37,.25)),side,mouse);
 	vec4 mouth = Mouth(within(uv,vec4(-.3,-.4,.3,-.1)),mouse);
 
 	col = mix(col,head,head.a);
