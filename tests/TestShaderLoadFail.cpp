@@ -107,6 +107,7 @@ namespace test {
 
 	}
 	void TestShaderLoadFail::OnImGuiRender() {
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui:: InputText("File Name:",&shader_name);
 		ImGui:: InputText("Texture 0:",&texture_name[0]);
 		ImGui:: InputText("Texture 1:",&texture_name[1]);

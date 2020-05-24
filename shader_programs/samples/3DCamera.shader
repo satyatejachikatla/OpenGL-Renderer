@@ -51,12 +51,12 @@ void main()
 	vec2 uv = (fragCoords-.5*u_Resolution.xy)/u_Resolution.y;
 	vec2 mouse = (u_Mouse-0.5*u_Resolution)/u_Resolution.y;
 
-	float t = u_Time;
+	float t = u_Time*2.;
 
 	float zoom = 1.;
 
 	vec3 ro = vec3(3.*sin(t),0.,-3*cos(t));
-	vec3 lookat = vec3(0.5,0.5,0.5);
+	vec3 lookat = vec3(0.,0.,0.);
 	vec3 u_world = vec3(0.,1.,0.);
 	vec3 f = normalize(lookat-ro);
 	vec3 r = cross(u_world,f);
@@ -70,13 +70,15 @@ void main()
 	float d = 0.;
 
 	d += DrawPoint(ro,rd,vec3(0.,0.,0.));
-	d += DrawPoint(ro,rd,vec3(0.,1.,0.));
-	d += DrawPoint(ro,rd,vec3(1.,1.,0.));
-	d += DrawPoint(ro,rd,vec3(1.,0.,0.));
-	d += DrawPoint(ro,rd,vec3(0.,0.,1.));
-	d += DrawPoint(ro,rd,vec3(0.,1.,1.));
-	d += DrawPoint(ro,rd,vec3(1.,1.,1.));
-	d += DrawPoint(ro,rd,vec3(1.,0.,1.));
+
+	d += DrawPoint(ro,rd,vec3(0.,0.,0.)-vec3(.5));
+	d += DrawPoint(ro,rd,vec3(0.,1.,0.)-vec3(.5));
+	d += DrawPoint(ro,rd,vec3(1.,1.,0.)-vec3(.5));
+	d += DrawPoint(ro,rd,vec3(1.,0.,0.)-vec3(.5));
+	d += DrawPoint(ro,rd,vec3(0.,0.,1.)-vec3(.5));
+	d += DrawPoint(ro,rd,vec3(0.,1.,1.)-vec3(.5));
+	d += DrawPoint(ro,rd,vec3(1.,1.,1.)-vec3(.5));
+	d += DrawPoint(ro,rd,vec3(1.,0.,1.)-vec3(.5));
 
 	fragColor = vec4(d);
 }
