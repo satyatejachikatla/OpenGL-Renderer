@@ -35,14 +35,24 @@ uniform vec2 u_Resolution;
 uniform vec2 u_Mouse;
 uniform sampler2D u_TextureChannels[5];
 
-vec4 hitSphere(vec3 ro,vec3 rd,vec3 S,float r){
+struct R {
+	bool hit;
+	vec4 col;
+};
+
+R hitSphere(vec3 ro,vec3 rd,vec3 S,float r){
 	float l = dot(S-ro,rd);
 	float d = length(ro-S+l*rd);
 
 	float t = sqrt(r*r - d*d);
 
-	//Return color based on normal
-	return t >= 0 ? vec4(abs(S-ro-(l-t)*rd),1.) : vec4(.0) ;
+	vec3 p1 = ro+(l-t)*rd;
+	vec3 p2 = ro+(l+t)*rd;
+
+	R temp;
+	temp.hit = t>=0;
+	temp.col = vec4(abs(S-p1),1.);
+	return temp;
 }
 
 void main()
@@ -71,13 +81,15 @@ void main()
 
 	vec4 col = vec4(0.);
 
-	vec4 sphere1 = hitSphere(ro,rd,vec3(-2.0,0.0,0.0),1.);
-	vec4 sphere2 = hitSphere(ro,rd,vec3(2.0,0.0,0.0),1.);
+	R sphere1 = hitSphere(ro,rd,vec3(-2.0,0.0,0.0),1.);
 
-	col += mix(col,sphere1,sphere1.a);
-	col += mix(col,sphere2,sphere2.a);
-
-	fragColor = col;
+	if(sphere1.hit)
+		fragColor = sphere1.col;
+	else {
+		float t = 0.5*(rd.y + 1.0);
+		vec3 c = (1.0-t)*vec3(1.0, 1.0, 1.0) + t*vec3(0.5, 0.7, 1.0);
+		fragColor = vec4(c,1.);
+	}
 }
 
 
