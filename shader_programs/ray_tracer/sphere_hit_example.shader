@@ -67,7 +67,7 @@ void main()
 
 	float zoom = 1.;
 
-	vec3 ro = vec3(3.*sin(t),2.,-3*cos(t));
+	vec3 ro = vec3(3.*sin(t),1.,-3*cos(t));
 	vec3 lookat = vec3(mouse,0.);
 	vec3 u_world = vec3(0.,1.,0.);
 	vec3 f = normalize(lookat-ro);

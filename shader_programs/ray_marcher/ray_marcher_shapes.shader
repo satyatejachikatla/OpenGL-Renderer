@@ -39,15 +39,74 @@ uniform sampler2D u_TextureChannels[5];
 #define MAX_STEPS       100
 #define SURF_DIST       .01
 
-float GetDist(vec3 p){
-	vec4 s = vec4(0.,1.,6.,1.);
-	vec4 s2 = vec4(2.1,1.,6.,1.);
+float sdCapsule(vec3 p,vec3 a,vec3 b ,float r) {
+	vec3 ab = b-a;
+	vec3 ap = p-a;
 
+	float t = dot(ab,ap)/dot(ab,ab);
+	t = clamp(t,0.,1.);
+
+	vec3 c = a + t*ab;
+	return length(p-c) - r;
+
+}
+
+float sdTorus(vec3 p,vec2 r) {
+	float x = length(p.xz) - r.x;
+
+	return length(vec2(x,p.y)) - r.y;
+
+}
+
+float dbox(vec3 p,vec3 s){
+	return length(max(abs(p) -s,0) );
+}
+
+float sdCylinder(vec3 p,vec3 a,vec3 b ,float r) {
+	vec3 ab = b-a;
+	vec3 ap = p-a;
+
+	float t = dot(ab,ap)/dot(ab,ab);
+	//t = clamp(t,0.,1.);
+
+	vec3 c = a + t*ab;
+
+	float x = length(p-c)-r;
+	float y = (abs(t-.5)-.5)*length(ab);
+	float e = length(max(vec2(x,y),0.));
+
+	float i = min(max(x,y),0);
+
+	return e + i;
+
+}
+
+float GetDist(vec3 p) {
+	vec4 s = vec4(0.,1.,6.,1.);
+
+	// Sphere Example
 	float sphereDist = length(p-s.xyz) - s.w;
-	float sphereDist2 = length(p-s2.xyz) - s2.w;
 	float planeDist = p.y;
 
-	float d = min(min(sphereDist,planeDist),sphereDist2);
+	// Capsule Example
+	float cd = sdCapsule(p,vec3(0.,1.,6.),vec3(1.,2.,2.),.2);
+
+	// Torus Example
+	float td = sdTorus(p-vec3(.0,.5,6.),vec2(1.5,.25));
+
+	// Box Example
+	float bd = dbox(p-vec3(-2.5,.5,6.),vec3(.75));
+
+	// Cylinder Example
+
+	float cyld = sdCylinder(p-vec3(.5,.5,.5),vec3(0.,.3,.0),vec3(1.,2.,2.),.1);
+
+	float d;
+	d = min(cd,planeDist);
+	d = min(d,sphereDist);
+	d = min(d,td);
+	d = min(d,bd);
+	d = min(d,cyld);
 
 	return d;
 
@@ -98,16 +157,15 @@ void main()
 {
 	vec2 fragCoords = v_position.xy;
 	vec2 uv = (fragCoords-.5*u_Resolution.xy)/u_Resolution.y;
-	vec2 mouse = (u_Mouse-0.5*u_Resolution)/u_Resolution.y;
+	vec2 mouse = (u_Mouse-.5*u_Resolution)/u_Resolution.y;
 
 	mouse = 3. *vec2(mouse.x,-mouse.y) ;
-	mouse = normalize(mouse);
 
 
 	float t = u_Time;
 /*camera start*/
 	float zoom = 1.;
-	vec3 ro = vec3(-0.,1.,-0);
+	vec3 ro = vec3(-1.,2.,-1);
 	vec3 lookat = vec3(mouse,1.);
 	vec3 u_world = vec3(0.,1.,0.);
 	vec3 f = normalize(lookat-ro);
@@ -130,3 +188,5 @@ void main()
 
 	fragColor = vec4(col,1.);
 }
+
+//./shader_programs/ray_marcher/ray_marcher_shapes.shader
